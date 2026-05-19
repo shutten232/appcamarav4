@@ -2,190 +2,435 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="CRPC">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#050505">
 <link id="manifest-link" rel="manifest">
 <link id="apple-icon" rel="apple-touch-icon">
-<title>CRPC Quiroga - PWA Links</title>
+<title>CRPC Quiroga · Escaneo</title>
+
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#000;color:#fff;max-width:430px;margin:0 auto;padding-bottom:88px;}
-.hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 14px 10px;background:#111;}
-.hdr h1{font-size:18px;font-weight:700;letter-spacing:-.4px;}
-.hdr p{font-size:11px;color:#555;margin-top:1px;}
-.taller{display:flex;align-items:center;gap:8px;background:#1c1c1e;margin:8px 10px;border-radius:12px;padding:11px 14px;}
-.taller label{font-size:13px;color:#777;white-space:nowrap;}
-.taller input{flex:1;background:transparent;border:none;outline:none;color:#fff;font-size:16px;font-weight:500;min-width:0;}
-.taller input::placeholder{color:#3a3a3a;}
-.slbl{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#555;margin:10px 10px 5px;}
-.grid-5{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin:0 10px;}
-.grid-5 .slot{aspect-ratio:4/3;}
-.solo{grid-column:1/3;width:50%;justify-self:center;}
-.slot{position:relative;overflow:hidden;border-radius:10px;background:#111;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:1.5px dashed #252525;}
-.slot .ico{font-size:26px;line-height:1;}
-.slot .lbl{font-size:10.5px;color:#4a4a4a;text-align:center;padding:0 8px;line-height:1.3;}
-.slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;}
-.slot.ok img{display:block;}
-.slot.ok .ico,.slot.ok .lbl{display:none;}
-.slot.ok{border-color:#25d366;border-style:solid;}
-.badge{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.72));padding:12px 8px 5px;font-size:10px;color:#ccc;text-align:center;display:none;}
-.slot.ok .badge{display:block;}
-.tick{position:absolute;top:6px;right:6px;background:#25d366;width:19px;height:19px;border-radius:50%;font-size:11px;display:none;align-items:center;justify-content:center;font-weight:700;}
-.slot.ok .tick{display:flex;}
-input[type=file]{display:none;}
-.inst{display:none;background:#1c1c1e;border-radius:12px;margin:8px 10px 0;padding:11px 14px;align-items:center;gap:10px;}
-.inst.show{display:flex;}
-.inst p{flex:1;font-size:12px;color:#aaa;line-height:1.4;}
-.inst button{background:#007aff;color:#fff;border:none;border-radius:9px;padding:7px 12px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;}
-.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;padding:10px 10px 24px;background:linear-gradient(transparent,#000 22%);}
-.sbtn{width:100%;border:none;border-radius:14px;padding:15px;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;background:#25d366;color:#fff;transition:opacity .15s;}
-.sbtn:active{opacity:.75;}
-.sbtn:disabled{background:#1c1c1e;color:#3a3a3a;pointer-events:none;}
-.cnt{background:rgba(0,0,0,.28);border-radius:20px;padding:2px 9px;font-size:12px;}
-.ldg{display:none;text-align:center;padding:14px;color:#666;font-size:14px;}
-.ldg.on{display:block;}
-@keyframes spin{to{transform:rotate(360deg);}}
-.sp{display:inline-block;width:18px;height:18px;border:2px solid #333;border-top-color:#25d366;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px;}
-.toast{position:fixed;bottom:95px;left:50%;transform:translateX(-50%);background:#1c1c1e;color:#fff;padding:9px 16px;border-radius:20px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;z-index:999;border:1px solid #2a2a2a;}
-.toast.show{opacity:1;}
+:root{
+  --bg:#050505;
+  --panel:#121214;
+  --panel2:#1c1c1f;
+  --line:#2b2b30;
+  --muted:#888;
+  --soft:#555;
+  --txt:#fff;
+  --green:#25d366;
+  --red:#ff453a;
+  --blue:#0a84ff;
+  --yellow:#ffd60a;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+body{max-width:460px;margin:0 auto;padding-bottom:98px;min-height:100vh}
+button,input{font-family:inherit}
+button{cursor:pointer}
+.hide{display:none!important}
 
-.slbl-hist{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#555;margin:14px 10px 5px;display:flex;align-items:center;justify-content:space-between;}
-.slbl-hist button{font-size:11px;color:#ff453a;background:none;border:none;cursor:pointer;font-weight:600;letter-spacing:0;}
-.hist-list{margin:0 10px 6px;display:flex;flex-direction:column;gap:6px;}
-.hist-empty{color:#3a3a3a;font-size:13px;text-align:center;padding:18px 0;margin:0 10px;}
-.hitem{background:#1c1c1e;border-radius:10px;padding:11px 12px;display:flex;align-items:center;gap:10px;}
-.hitem-info{flex:1;min-width:0;}
-.hitem-taller{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.hitem-meta{font-size:11px;color:#666;margin-top:2px;}
-.hitem-btns{display:flex;gap:6px;flex-shrink:0;}
-.hbtn{background:#2c2c2e;border:none;border-radius:8px;width:34px;height:34px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-.hbtn:active{opacity:.6;}
-.hbtn-del{background:#3a1a1a;}
-.hbtn-link{background:#12351f;}
-.cloud-row{display:flex;gap:6px;margin:0 10px 8px;}
-.cloud-row button{flex:1;background:#1c1c1e;color:#aaa;border:1px solid #2a2a2a;border-radius:9px;padding:9px;font-size:12px;font-weight:700;cursor:pointer;}
-.cloud-row button:active{opacity:.7;}
-.link-ok{color:#25d366;font-weight:700;}
-.link-no{color:#ff9f0a;font-weight:700;}
+/* HEADER */
+.header{
+  position:sticky;top:0;z-index:40;
+  background:linear-gradient(180deg,#080808 0%,rgba(8,8,8,.94) 80%,rgba(8,8,8,.75));
+  padding:14px 12px 10px;
+  border-bottom:1px solid #151515;
+  backdrop-filter:blur(12px);
+}
+.toprow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{
+  width:38px;height:38px;border-radius:12px;
+  background:linear-gradient(135deg,#202024,#0d0d0f);
+  border:1px solid #2c2c32;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--green);font-weight:900;letter-spacing:-1px;
+}
+.brand h1{font-size:17px;line-height:1.05;letter-spacing:-.35px}
+.brand p{font-size:11px;color:#666;margin-top:2px}
+.statusMini{
+  background:#101012;border:1px solid #222;border-radius:999px;
+  padding:7px 10px;font-size:11px;color:#aaa;white-space:nowrap;
+}
+.statusMini.ok{color:var(--green);border-color:#174f2c;background:#07160d}
+.statusMini.bad{color:var(--red);border-color:#581b18;background:#1a0908}
 
-.val-result{display:flex;gap:6px;margin:7px 10px 0;}
-.vbtn{flex:1;border:1.5px solid #2a2a2a;border-radius:10px;padding:10px 6px;text-align:center;cursor:pointer;font-size:12px;font-weight:600;background:#1c1c1e;color:#555;transition:all .2s;}
-.vbtn.ok{background:#0d2e18;border-color:#25d366;color:#25d366;}
-.vbtn.rech{background:#2e0d0d;border-color:#ff453a;color:#ff453a;}
+/* TABS */
+.tabs{
+  display:grid;grid-template-columns:1fr 1fr;gap:7px;
+  margin-top:12px;background:#0d0d0f;padding:5px;border-radius:15px;border:1px solid #1d1d21;
+}
+.tab{
+  border:none;border-radius:11px;padding:10px 8px;
+  background:transparent;color:#777;font-size:13px;font-weight:800;
+}
+.tab.active{background:#25252a;color:#fff;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+
+/* COMMON */
+.page{padding:12px 10px}
+.card{
+  background:var(--panel);border:1px solid #24242a;border-radius:16px;
+  padding:12px;margin-bottom:10px;
+}
+.label{font-size:10px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;color:#666;margin:14px 2px 7px}
+.small{font-size:12px;color:#777;line-height:1.35}
+.row{display:flex;align-items:center;gap:8px}
+.grow{flex:1}
+
+/* INSTALL */
+.install{
+  display:none;align-items:center;gap:10px;
+  background:#102012;border:1px solid #1d5f32;
+  border-radius:14px;padding:10px 12px;margin-bottom:10px;
+}
+.install.show{display:flex}
+.install p{font-size:12px;color:#b7eac7;line-height:1.35;flex:1}
+.install button{
+  background:var(--green);color:#06120a;border:none;border-radius:10px;
+  font-weight:900;font-size:12px;padding:8px 11px;
+}
+
+/* FORM */
+.field{
+  display:flex;align-items:center;gap:9px;
+  background:#17171a;border:1px solid #29292f;border-radius:14px;
+  padding:11px 12px;
+}
+.field span{font-size:12px;color:#777;font-weight:800}
+.field input{
+  flex:1;background:transparent;border:none;outline:none;color:#fff;
+  font-size:16px;font-weight:700;min-width:0;
+}
+.field input::placeholder{color:#3f3f44}
+.quickBtns{display:flex;gap:7px;margin-top:9px;overflow-x:auto;padding-bottom:1px}
+.qbtn{
+  flex:0 0 auto;background:#202024;border:1px solid #313139;color:#ccc;
+  border-radius:999px;padding:7px 10px;font-size:12px;font-weight:700;
+}
+
+/* PHOTO GRID */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.slot{
+  min-height:128px;border-radius:15px;background:#111114;
+  border:1.5px dashed #303036;position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+}
+.slot.solo{grid-column:1/3;width:52%;justify-self:center}
+.slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
+.slot.ok{border-color:var(--green);border-style:solid}
+.slot.ok img{display:block}
+.slot.ok .empty{display:none}
+.empty{padding:10px}
+.ico{font-size:25px;margin-bottom:5px}
+.txt{font-size:11px;color:#555;font-weight:800;line-height:1.25}
+.tick{
+  display:none;position:absolute;top:7px;right:7px;width:24px;height:24px;
+  background:var(--green);color:#06220f;border-radius:50%;
+  align-items:center;justify-content:center;font-weight:1000;font-size:14px;
+  box-shadow:0 3px 10px rgba(0,0,0,.35);
+}
+.slot.ok .tick{display:flex}
+.badge{
+  display:none;position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(transparent,rgba(0,0,0,.86));
+  padding:18px 6px 7px;font-size:10px;font-weight:800;color:#ddd;
+}
+.slot.ok .badge{display:block}
+.xphoto{
+  display:none;position:absolute;top:7px;left:7px;width:24px;height:24px;
+  border:none;border-radius:50%;background:rgba(0,0,0,.65);color:#fff;font-weight:900;
+}
+.slot.ok .xphoto{display:block}
+
+/* RESULT */
+.resultGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.resultBtn{
+  border:1.5px solid #2a2a2f;border-radius:13px;padding:11px 8px;
+  background:#17171a;color:#777;font-size:13px;font-weight:900;text-align:center;
+}
+.resultBtn.ok.active{background:#082012;border-color:var(--green);color:var(--green)}
+.resultBtn.rech.active{background:#250908;border-color:var(--red);color:var(--red)}
+.counter{
+  display:flex;justify-content:space-between;align-items:center;
+  color:#777;font-size:12px;margin-top:9px;
+}
+.progress{height:7px;background:#1c1c20;border-radius:99px;overflow:hidden;margin-top:8px}
+.progress span{display:block;height:100%;width:0;background:var(--green);border-radius:99px;transition:.2s}
+
+/* SEND BAR */
+.bottom{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:460px;padding:10px 10px calc(16px + env(safe-area-inset-bottom));
+  background:linear-gradient(transparent,#050505 23%,#050505);
+  z-index:50;
+}
+.sendBtn{
+  width:100%;border:none;border-radius:17px;padding:15px 14px;
+  background:var(--green);color:#06120a;font-size:16px;font-weight:1000;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.sendBtn:disabled{background:#202024;color:#555}
+.secondaryLine{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:7px}
+.smallBtn{
+  border:none;border-radius:13px;background:#1b1b1f;color:#aaa;
+  padding:10px 8px;font-weight:800;font-size:12px;
+}
+
+/* STATUS */
+.workBox{
+  display:none;background:#0d1824;border:1px solid #1b4e7d;border-radius:15px;
+  padding:11px 12px;margin-bottom:10px;color:#cae4ff;
+}
+.workBox.show{display:block}
+.workTitle{font-size:13px;font-weight:900;margin-bottom:5px}
+.workMsg{font-size:12px;color:#9fc5e8}
+.spin{
+  display:inline-block;width:15px;height:15px;border:2px solid #31577e;
+  border-top-color:#d6ecff;border-radius:50%;animation:spin .7s linear infinite;
+  margin-right:7px;vertical-align:-2px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{
+  position:fixed;left:50%;bottom:96px;transform:translateX(-50%);
+  max-width:92%;background:#1b1b1f;color:#fff;border:1px solid #333;
+  border-radius:999px;padding:10px 15px;font-size:13px;z-index:100;
+  opacity:0;pointer-events:none;transition:.25s;text-align:center;
+}
+.toast.show{opacity:1}
+
+/* HISTORY */
+.histHeader{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;margin-bottom:10px}
+.search{
+  background:#17171a;border:1px solid #2a2a30;border-radius:14px;
+  color:#fff;font-size:14px;padding:12px;outline:none;width:100%;
+}
+.filterRow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:10px}
+.fbtn{
+  border:1px solid #29292f;background:#151518;color:#777;border-radius:12px;
+  padding:9px 6px;font-size:12px;font-weight:900;
+}
+.fbtn.active{background:#24242a;color:#fff;border-color:#3c3c44}
+.statsGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.stat{
+  background:#121214;border:1px solid #24242a;border-radius:15px;padding:12px;
+}
+.stat b{font-size:21px;letter-spacing:-.7px}
+.stat span{display:block;font-size:11px;color:#777;margin-top:2px;font-weight:800}
+.histList{display:flex;flex-direction:column;gap:8px}
+.emptyHist{
+  text-align:center;color:#555;border:1px dashed #29292f;border-radius:16px;
+  padding:28px 12px;font-size:13px;line-height:1.4;
+}
+.hitem{
+  background:#121214;border:1px solid #24242a;border-radius:16px;padding:12px;
+}
+.hTop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.hTitle{font-size:15px;font-weight:1000;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hDate{font-size:11px;color:#777;margin-top:3px}
+.hBadge{
+  flex:0 0 auto;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:1000;
+}
+.hBadge.ok{background:#092112;color:var(--green);border:1px solid #164b29}
+.hBadge.rech{background:#270908;color:var(--red);border:1px solid #5b1916}
+.hLink{
+  margin-top:10px;background:#0c0c0e;border:1px solid #24242a;border-radius:11px;
+  padding:9px;font-size:11px;color:#8fbfff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.hActions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-top:10px}
+.hActions button{
+  border:none;border-radius:11px;background:#202024;color:#ddd;
+  padding:10px 6px;font-size:12px;font-weight:900;
+}
+.hActions button.del{background:#2b1010;color:#ffb5b0}
+.dangerBtn{
+  background:#2b1010;color:#ffb5b0;border:1px solid #4a1917;
+  border-radius:13px;padding:11px 12px;font-size:13px;font-weight:900;
+}
+.cleanRow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+
+/* DEBUG */
+details.debug{
+  margin:10px 0;background:#111114;border:1px solid #24242a;border-radius:14px;padding:11px;
+}
+details.debug summary{font-size:12px;color:#777;font-weight:900}
+.debug pre{white-space:pre-wrap;color:#aaa;font-size:11px;line-height:1.35;margin-top:8px}
+
+/* FILE INPUT */
+input[type=file]{display:none}
 </style>
 </head>
+
 <body>
+<header class="header">
+  <div class="toprow">
+    <div class="brand">
+      <div class="logo">CQ</div>
+      <div>
+        <h1>CRPC Quiroga</h1>
+        <p>Escaneo · PDF · WhatsApp</p>
+      </div>
+    </div>
+    <div id="firebaseStatus" class="statusMini">Firebase...</div>
+  </div>
 
-<div class="hdr">
-  <div>
-    <h1>CRPC Quiroga</h1>
-    <p>Registro fotográfico · PWA + links Firebase</p>
+  <nav class="tabs">
+    <button id="tabScan" class="tab active" onclick="setTab('scan')">Nuevo escaneo</button>
+    <button id="tabHist" class="tab" onclick="setTab('hist')">Historial</button>
+  </nav>
+</header>
+
+<main>
+  <!-- NUEVO ESCANEO -->
+  <section id="pageScan" class="page">
+    <div class="install" id="installBox">
+      <p>Instalá esta app en el celular para usarla como acceso directo.</p>
+      <button onclick="installApp()">Instalar</button>
+    </div>
+
+    <div class="workBox" id="workBox">
+      <div class="workTitle"><span class="spin"></span>Procesando</div>
+      <div class="workMsg" id="workMsg">Preparando...</div>
+    </div>
+
+    <div class="card">
+      <div class="field">
+        <span>Taller</span>
+        <input id="taller" type="text" placeholder="Nombre del taller" autocomplete="off" autocapitalize="words">
+      </div>
+      <div class="quickBtns">
+        <button class="qbtn" onclick="setTallerQuick('Misiti')">Misiti</button>
+        <button class="qbtn" onclick="setTallerQuick('Leal')">Leal</button>
+        <button class="qbtn" onclick="setTallerQuick('Gutiérrez')">Gutiérrez</button>
+        <button class="qbtn" onclick="setTallerQuick('Alemanes')">Alemanes</button>
+      </div>
+    </div>
+
+    <div class="label">Cilindro</div>
+    <div class="grid">
+      <div class="slot" id="btn_s" onclick="sacar('s')">
+        <img id="img_s" alt="">
+        <button class="xphoto" onclick="event.stopPropagation(); borrarFoto('s')">×</button>
+        <div class="empty"><div class="ico">🔢</div><div class="txt">N° serie y marcado</div></div>
+        <div class="tick">✓</div><div class="badge">N° serie — tocar para repetir</div>
+      </div>
+
+      <div class="slot" id="btn_v" onclick="sacar('v')">
+        <img id="img_v" alt="">
+        <button class="xphoto" onclick="event.stopPropagation(); borrarFoto('v')">×</button>
+        <div class="empty"><div class="ico">📦</div><div class="txt">Volumen / capacidad</div></div>
+        <div class="tick">✓</div><div class="badge">Volumen — tocar para repetir</div>
+      </div>
+
+      <div class="slot solo" id="btn_g" onclick="sacar('g')">
+        <img id="img_g" alt="">
+        <button class="xphoto" onclick="event.stopPropagation(); borrarFoto('g')">×</button>
+        <div class="empty"><div class="ico">🔩</div><div class="txt">Vista general</div></div>
+        <div class="tick">✓</div><div class="badge">Vista general — tocar para repetir</div>
+      </div>
+    </div>
+
+    <div class="label">Válvula</div>
+    <div class="grid">
+      <div class="slot" id="btn_vm" onclick="sacar('vm')">
+        <img id="img_vm" alt="">
+        <button class="xphoto" onclick="event.stopPropagation(); borrarFoto('vm')">×</button>
+        <div class="empty"><div class="ico">🔧</div><div class="txt">Válvula montada</div></div>
+        <div class="tick">✓</div><div class="badge">Válvula montada — tocar para repetir</div>
+      </div>
+
+      <div class="slot" id="btn_vd" onclick="sacar('vd')">
+        <img id="img_vd" alt="">
+        <button class="xphoto" onclick="event.stopPropagation(); borrarFoto('vd')">×</button>
+        <div class="empty"><div class="ico">🏷️</div><div class="txt">Marcado válvula</div></div>
+        <div class="tick">✓</div><div class="badge">Marcado válvula — tocar para repetir</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:12px">
+      <div class="label" style="margin-top:0">Resultado válvula</div>
+      <div class="resultGrid">
+        <button id="resOk" class="resultBtn ok active" onclick="setValvula('ok')">✅ Válvula apta</button>
+        <button id="resRech" class="resultBtn rech" onclick="setValvula('rech')">⛔ Rechazada</button>
+      </div>
+
+      <div class="counter">
+        <span>Fotos cargadas</span>
+        <b id="countTxt">0 / 5</b>
+      </div>
+      <div class="progress"><span id="progressBar"></span></div>
+      <p class="small" style="margin-top:9px">Mínimo recomendado: 4 fotos. Ideal: 5 fotos.</p>
+    </div>
+
+    <details class="debug">
+      <summary>Estado técnico</summary>
+      <pre id="debugInfo">Cargando...</pre>
+    </details>
+  </section>
+
+  <!-- HISTORIAL -->
+  <section id="pageHist" class="page hide">
+    <div class="histHeader">
+      <input id="histSearch" class="search" placeholder="Buscar taller..." oninput="renderHist()">
+      <button class="smallBtn" onclick="renderHist()">Actualizar</button>
+    </div>
+
+    <div class="filterRow">
+      <button id="fHoy" class="fbtn active" onclick="setFilter('hoy')">Hoy</button>
+      <button id="fSemana" class="fbtn" onclick="setFilter('semana')">Semana</button>
+      <button id="fTodos" class="fbtn" onclick="setFilter('todos')">Todos</button>
+    </div>
+
+    <div class="statsGrid">
+      <div class="stat"><b id="statCount">0</b><span>registros mostrados</span></div>
+      <div class="stat"><b id="statToday">0</b><span>generados hoy</span></div>
+    </div>
+
+    <div class="card">
+      <div class="small">
+        El historial queda guardado solo en este celular. Borrar el historial local no borra los PDF ya subidos a Firebase.
+      </div>
+      <div class="cleanRow">
+        <button class="dangerBtn" onclick="limpiarDia()">Limpiar día</button>
+        <button class="dangerBtn" onclick="limpiarTodo()">Borrar todo</button>
+      </div>
+    </div>
+
+    <div id="histList" class="histList">
+      <div class="emptyHist">Sin registros todavía.</div>
+    </div>
+  </section>
+</main>
+
+<div class="bottom" id="bottomScan">
+  <button id="sendBtn" class="sendBtn" onclick="enviar()" disabled>
+    📲 Generar PDF y enviar
+  </button>
+  <div class="secondaryLine">
+    <button class="smallBtn" onclick="limpiarFormulario(false)">Limpiar fotos</button>
+    <button class="smallBtn" onclick="copiarUltimoLink()">Copiar último link</button>
   </div>
 </div>
 
-<div class="inst" id="instBar">
-  <p>Instalá la app en el celular</p>
-  <button onclick="instalar()">Instalar</button>
-</div>
+<div class="toast" id="toast"></div>
 
-<div class="taller">
-  <label>Taller</label>
-  <input type="text" id="taller" placeholder="Nombre del taller" autocomplete="off" autocorrect="off" autocapitalize="words">
-</div>
-
-<div class="slbl">Cilindro</div>
-<div class="grid-5">
-  <div class="slot" id="btn_s" onclick="sacar('s')">
-    <img id="img_s">
-    <span class="ico">🔢</span>
-    <span class="lbl">N° serie y marcado</span>
-    <div class="tick">✓</div>
-    <div class="badge">N° serie — repetir</div>
-  </div>
-  <div class="slot" id="btn_v" onclick="sacar('v')">
-    <img id="img_v">
-    <span class="ico">📦</span>
-    <span class="lbl">Volumen / capacidad</span>
-    <div class="tick">✓</div>
-    <div class="badge">Volumen — repetir</div>
-  </div>
-  <div class="slot solo" id="btn_g" onclick="sacar('g')">
-    <img id="img_g">
-    <span class="ico">🔩</span>
-    <span class="lbl">Vista general</span>
-    <div class="tick">✓</div>
-    <div class="badge">Vista general — repetir</div>
-  </div>
-</div>
-
-<div class="slbl" style="margin-top:11px;">Válvula</div>
-<div class="grid-5">
-  <div class="slot" id="btn_vm" onclick="sacar('vm')">
-    <img id="img_vm">
-    <span class="ico">🔧</span>
-    <span class="lbl">Válvula montada</span>
-    <div class="tick">✓</div>
-    <div class="badge">Válvula montada — repetir</div>
-  </div>
-  <div class="slot" id="btn_vd" onclick="sacar('vd')">
-    <img id="img_vd">
-    <span class="ico">🏷️</span>
-    <span class="lbl">Marcado válvula</span>
-    <div class="tick">✓</div>
-    <div class="badge">Marcado válvula — repetir</div>
-  </div>
-</div>
-
-
-<div class="slbl-hist">
-  <span>Historial local</span>
-  <button onclick="borrarHoy()">Limpiar día</button>
-</div>
-<div class="cloud-row">
-  <button onclick="copiarUltimoLink()">🔗 Copiar último link</button>
-  <button onclick="borrarTodo()">🗑️ Borrar todo</button>
-</div>
-<div class="hist-list" id="histList">
-  <div class="hist-empty">Sin registros aún</div>
-</div>
-
-<div class="val-result">
-  <div class="vbtn ok" id="vb_ok" onclick="setValvula('ok')">✅ Válvula apta</div>
-  <div class="vbtn" id="vb_rech" onclick="setValvula('rech')">⛔ Válvula rechazada</div>
-</div>
-
-<input type="file" accept="image/*" capture="environment" id="fi_s"  onchange="cargar(this,'s')">
-<input type="file" accept="image/*" capture="environment" id="fi_v"  onchange="cargar(this,'v')">
-<input type="file" accept="image/*" capture="environment" id="fi_g"  onchange="cargar(this,'g')">
+<input type="file" accept="image/*" capture="environment" id="fi_s" onchange="cargar(this,'s')">
+<input type="file" accept="image/*" capture="environment" id="fi_v" onchange="cargar(this,'v')">
+<input type="file" accept="image/*" capture="environment" id="fi_g" onchange="cargar(this,'g')">
 <input type="file" accept="image/*" capture="environment" id="fi_vm" onchange="cargar(this,'vm')">
 <input type="file" accept="image/*" capture="environment" id="fi_vd" onchange="cargar(this,'vd')">
 
-<div class="ldg" id="ldg"><span class="sp"></span>Generando PDF…</div>
-
-<div class="bottom">
-  <button class="sbtn" id="sendbtn" onclick="enviar()" disabled>
-    <span>📲 Enviar a WhatsApp</span>
-    <span class="cnt" id="cnt">0 / 5</span>
-  </button>
-</div>
-<div class="toast" id="toast"></div>
-
-<!-- jsPDF library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-<!-- Firebase Storage -->
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-storage-compat.js"></script>
 
 <script>
-/* ═══════════════════════════════════════════════════════════════
-   CONFIG DE FIREBASE STORAGE — Proyecto: fotoscrpc
-   App lista para subir PDF y mandar link por WhatsApp.
-   ═══════════════════════════════════════════════════════════════ */
+/* =========================================================
+   CONFIGURACIÓN
+   ========================================================= */
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyALJ4g1G6LybzkLk2ZI97tJ9E8AdW2pzAE",
   authDomain: "fotoscrpc.firebaseapp.com",
@@ -195,578 +440,604 @@ const FIREBASE_CONFIG = {
   appId: "1:176606790230:web:fbe1be2d1f947ea69cf1f7"
 };
 
-/* Inicializar Firebase (solo si la config está pegada) */
+const WA = "543515144679";
+const KEYS = ["s","v","g","vm","vd"];
+const LABELS = {
+  s:"N° de serie y marcado",
+  v:"Volumen / capacidad",
+  g:"Vista general del cilindro",
+  vm:"Válvula montada",
+  vd:"Marcado de válvula"
+};
+const SECTION = {s:"CILINDRO",v:"CILINDRO",g:"CILINDRO",vm:"VÁLVULA",vd:"VÁLVULA"};
+
+const MAX_IMG = 2600;       // alta calidad
+const JPG_QUALITY = 0.93;   // alta calidad
+const UPLOAD_TIMEOUT = 30000;
+
+/* =========================================================
+   ESTADO
+   ========================================================= */
 let firebaseReady = false;
-if (!FIREBASE_CONFIG.apiKey.includes('PEGAR_AQUI')) {
-  try {
+let currentTab = "scan";
+let filter = "hoy";
+let resultadoValvula = "ok";
+let fotos = {};
+let ultimoLink = localStorage.getItem("crpc_ultimo_link") || "";
+let deferredPrompt = null;
+
+/* =========================================================
+   INIT FIREBASE
+   ========================================================= */
+(function initFirebase(){
+  const el = document.getElementById("firebaseStatus");
+  try{
     firebase.initializeApp(FIREBASE_CONFIG);
     firebaseReady = true;
-    console.log('✓ Firebase OK');
-  } catch (e) {
-    console.error('Firebase error:', e);
+    el.textContent = "Firebase OK";
+    el.className = "statusMini ok";
+  }catch(e){
+    console.error(e);
+    firebaseReady = false;
+    el.textContent = "Firebase ERROR";
+    el.className = "statusMini bad";
   }
-} else {
-  console.warn('⚠️ Falta pegar config de Firebase en index.html');
-}
-
-/* Sube un PDF a Firebase Storage y devuelve la URL pública.
-   La URL incluye un token aleatorio: solo quien tiene el link puede
-   ver el archivo (no aparece listado en ningún lado).                */
-function timeoutPromise(ms, msg){
-  return new Promise((_, rej)=>setTimeout(()=>rej(new Error(msg)), ms));
-}
-
-async function subirPDFaNube(blob, fname) {
-  if (!firebaseReady) {
-    throw new Error('Firebase no configurado');
-  }
-
-  if (!navigator.onLine) {
-    throw new Error('Sin internet');
-  }
-
-  const limpio = fname
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-zA-Z0-9_.-]/g, '_');
-
-  const path = 'crpc/pdfs/' + Date.now() + '_' + limpio;
-  const ref  = firebase.storage().ref(path);
-
-  const snap = await Promise.race([
-    ref.put(blob, { contentType: 'application/pdf' }),
-    timeoutPromise(20000, 'Firebase tardó demasiado. Revisá reglas de Storage o conexión.')
-  ]);
-
-  return await Promise.race([
-    snap.ref.getDownloadURL(),
-    timeoutPromise(8000, 'Se subió, pero no devolvió link')
-  ]);
-}
-
-/* ───────── ESTADO ───────── */
-let resultadoValvula = 'ok';
-function setValvula(v){
-  resultadoValvula = v;
-  document.getElementById('vb_ok').className   = v==='ok'   ? 'vbtn ok'   : 'vbtn';
-  document.getElementById('vb_rech').className = v==='rech' ? 'vbtn rech' : 'vbtn';
-}
-const WA='543515144679';
-const KEYS=['s','v','g','vm','vd'];
-const LABELS={
-  s:  'N° de serie y marcado',
-  v:  'Volumen / capacidad',
-  g:  'Vista general del cilindro',
-  vm: 'Válvula montada',
-  vd: 'Marcado de válvula'
-};
-const SECCION={
-  s:'CILINDRO', v:'CILINDRO', g:'CILINDRO',
-  vm:'VÁLVULA', vd:'VÁLVULA'
-};
-const fotos={};
-let deferredPrompt=null;
-
-/* ───────── PWA ───────── */
-(function initPWA(){
-  const c=document.createElement('canvas');
-  c.width=c.height=192;
-  const x=c.getContext('2d');
-  x.fillStyle='#1c1c1e';
-  x.beginPath();x.roundRect(0,0,192,192,40);x.fill();
-  x.fillStyle='#25d366';
-  x.font='bold 68px -apple-system,sans-serif';
-  x.textAlign='center';x.textBaseline='middle';
-  x.fillText('CQ',96,85);
-  x.fillStyle='#666';
-  x.font='bold 20px -apple-system,sans-serif';
-  x.fillText('CRPC',96,148);
-  const ico=c.toDataURL('image/png');
-  document.getElementById('apple-icon').href=ico;
-  const m={name:'CRPC Quiroga',short_name:'CRPC',start_url:'./',display:'standalone',
-    background_color:'#000000',theme_color:'#000000',orientation:'portrait',
-    icons:[{src:ico,sizes:'192x192',type:'image/png',purpose:'any maskable'}]};
-  const blob=new Blob([JSON.stringify(m)],{type:'application/manifest+json'});
-  document.getElementById('manifest-link').href=URL.createObjectURL(blob);
+  updateDebug();
 })();
 
-/* Service Worker para instalar como app en Android/iPhone.
-   Subí también el archivo sw.js en la misma carpeta que este index.html. */
-if('serviceWorker' in navigator){
-  window.addEventListener('load', async () => {
-    try {
-      const reg = await navigator.serviceWorker.register('./sw.js?v=3');
-      console.log('✓ PWA activa', reg.scope);
-    } catch(e){
-      console.warn('PWA sin service worker:', e);
+/* =========================================================
+   PWA
+   ========================================================= */
+(function initManifest(){
+  const c = document.createElement("canvas");
+  c.width = c.height = 192;
+  const x = c.getContext("2d");
+  x.fillStyle = "#111114";
+  x.beginPath();
+  if(x.roundRect){x.roundRect(0,0,192,192,42)}else{x.rect(0,0,192,192)}
+  x.fill();
+  x.fillStyle = "#25d366";
+  x.font = "900 68px -apple-system,BlinkMacSystemFont,sans-serif";
+  x.textAlign = "center";
+  x.textBaseline = "middle";
+  x.fillText("CQ",96,82);
+  x.fillStyle = "#777";
+  x.font = "900 20px -apple-system,BlinkMacSystemFont,sans-serif";
+  x.fillText("CRPC",96,146);
+  const icon = c.toDataURL("image/png");
+  document.getElementById("apple-icon").href = icon;
+  const manifest = {
+    name:"CRPC Quiroga",
+    short_name:"CRPC",
+    start_url:"./index.html",
+    scope:"./",
+    display:"standalone",
+    orientation:"portrait",
+    background_color:"#050505",
+    theme_color:"#050505",
+    icons:[{src:icon,sizes:"192x192",type:"image/png",purpose:"any maskable"}]
+  };
+  const blob = new Blob([JSON.stringify(manifest)],{type:"application/manifest+json"});
+  document.getElementById("manifest-link").href = URL.createObjectURL(blob);
+})();
+
+if("serviceWorker" in navigator){
+  window.addEventListener("load", async ()=>{
+    try{
+      await navigator.serviceWorker.register("./sw.js");
+    }catch(e){
+      console.warn("SW no registrado", e);
     }
   });
 }
 
-window.addEventListener('beforeinstallprompt',e=>{
-  e.preventDefault();deferredPrompt=e;
-  document.getElementById('instBar').classList.add('show');
+window.addEventListener("beforeinstallprompt", e=>{
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById("installBox").classList.add("show");
 });
-window.addEventListener('appinstalled',()=>document.getElementById('instBar').classList.remove('show'));
-function instalar(){
-  if(!deferredPrompt)return;
+window.addEventListener("appinstalled", ()=>{
+  document.getElementById("installBox").classList.remove("show");
+});
+function installApp(){
+  if(!deferredPrompt){
+    toast("Si no aparece instalar, usá menú del navegador > Agregar a pantalla de inicio");
+    return;
+  }
   deferredPrompt.prompt();
-  deferredPrompt.userChoice.then(()=>{deferredPrompt=null;document.getElementById('instBar').classList.remove('show');});
+  deferredPrompt.userChoice.finally(()=>{
+    deferredPrompt = null;
+    document.getElementById("installBox").classList.remove("show");
+  });
 }
 
-/* ───────── CAPTURA ───────── */
-function sacar(k){document.getElementById('fi_'+k).click();}
+/* =========================================================
+   UI
+   ========================================================= */
+function setTab(tab){
+  currentTab = tab;
+  document.getElementById("tabScan").classList.toggle("active",tab==="scan");
+  document.getElementById("tabHist").classList.toggle("active",tab==="hist");
+  document.getElementById("pageScan").classList.toggle("hide",tab!=="scan");
+  document.getElementById("pageHist").classList.toggle("hide",tab!=="hist");
+  document.getElementById("bottomScan").classList.toggle("hide",tab!=="scan");
+  if(tab==="hist") renderHist();
+}
+function setFilter(f){
+  filter = f;
+  document.getElementById("fHoy").classList.toggle("active",f==="hoy");
+  document.getElementById("fSemana").classList.toggle("active",f==="semana");
+  document.getElementById("fTodos").classList.toggle("active",f==="todos");
+  renderHist();
+}
+function setTallerQuick(v){
+  document.getElementById("taller").value = v;
+}
+function setValvula(v){
+  resultadoValvula = v;
+  document.getElementById("resOk").classList.toggle("active",v==="ok");
+  document.getElementById("resRech").classList.toggle("active",v==="rech");
+}
+function toast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg;
+  t.classList.add("show");
+  clearTimeout(t._timer);
+  t._timer=setTimeout(()=>t.classList.remove("show"),3200);
+}
+function setWork(show,msg){
+  const b=document.getElementById("workBox");
+  const m=document.getElementById("workMsg");
+  if(msg) m.textContent=msg;
+  b.classList.toggle("show",!!show);
+}
+function updateDebug(extra=""){
+  const n = Object.keys(fotos).length;
+  document.getElementById("debugInfo").textContent =
+`Firebase: ${firebaseReady ? "OK" : "ERROR"}
+Storage bucket: ${FIREBASE_CONFIG.storageBucket}
+Carpeta PDF: crpc/pdfs/
+Fotos: ${n}/5
+Calidad imagen: ${MAX_IMG}px / ${JPG_QUALITY}
+Último link: ${ultimoLink || "sin link"}
+${extra}`;
+}
 
+/* =========================================================
+   FOTOS
+   ========================================================= */
+function sacar(k){
+  document.getElementById("fi_"+k).click();
+}
 function cargar(inp,k){
-  const f=inp.files[0];if(!f)return;
-  const r=new FileReader();
-  r.onload=e=>{
-    fotos[k]=e.target.result;
-    document.getElementById('img_'+k).src=e.target.result;
-    document.getElementById('btn_'+k).classList.add('ok');
+  const f = inp.files && inp.files[0];
+  if(!f) return;
+  const r = new FileReader();
+  r.onload = e=>{
+    fotos[k] = e.target.result;
+    document.getElementById("img_"+k).src = e.target.result;
+    document.getElementById("btn_"+k).classList.add("ok");
     actualizar();
   };
   r.readAsDataURL(f);
+  inp.value = "";
 }
-
+function borrarFoto(k){
+  delete fotos[k];
+  document.getElementById("img_"+k).removeAttribute("src");
+  document.getElementById("btn_"+k).classList.remove("ok");
+  actualizar();
+}
 function actualizar(){
-  const n=KEYS.filter(k=>fotos[k]).length;
-  document.getElementById('cnt').textContent=n+' / 5';
-  document.getElementById('sendbtn').disabled=(n<4);
+  const n = KEYS.filter(k=>fotos[k]).length;
+  document.getElementById("countTxt").textContent = n + " / 5";
+  document.getElementById("progressBar").style.width = (n/5*100) + "%";
+  document.getElementById("sendBtn").disabled = n < 4;
+  updateDebug();
+}
+function limpiarFormulario(keepTaller){
+  fotos = {};
+  KEYS.forEach(k=>{
+    document.getElementById("img_"+k).removeAttribute("src");
+    document.getElementById("btn_"+k).classList.remove("ok");
+  });
+  if(!keepTaller) document.getElementById("taller").value = "";
+  setValvula("ok");
+  actualizar();
+  toast("Pantalla limpia");
 }
 
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),3000);
-}
-
-/* ───────── REDIMENSIONADO de IMAGEN ─────────
-   Reduce el tamaño en píxeles de la imagen original para que el PDF
-   no pese demasiado, pero MANTIENE la proporción original.            */
+/* =========================================================
+   IMAGEN / PDF
+   ========================================================= */
 async function resizeImg(src){
-  return new Promise(res=>{
-    const img=new Image();
-    img.onload=()=>{
-      const MAX=2400;
-      let w=img.naturalWidth,h=img.naturalHeight;
-      if(w>MAX){h=Math.round(h*MAX/w);w=MAX;}
-      if(h>MAX){w=Math.round(w*MAX/h);h=MAX;}
-      const c=document.createElement('canvas');
-      c.width=w;c.height=h;
-      c.getContext('2d').drawImage(img,0,0,w,h);
-      res({d:c.toDataURL('image/jpeg',0.92),w,h});
+  return new Promise((res,rej)=>{
+    const img = new Image();
+    img.onload = ()=>{
+      let w = img.naturalWidth, h = img.naturalHeight;
+      const ratio = Math.min(1, MAX_IMG/w, MAX_IMG/h);
+      w = Math.round(w*ratio);
+      h = Math.round(h*ratio);
+      const c = document.createElement("canvas");
+      c.width = w; c.height = h;
+      const ctx = c.getContext("2d", {alpha:false});
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(0,0,w,h);
+      ctx.drawImage(img,0,0,w,h);
+      res({d:c.toDataURL("image/jpeg",JPG_QUALITY),w,h});
     };
-    img.src=src;
+    img.onerror = rej;
+    img.src = src;
   });
 }
+function safeName(s){
+  return (s||"Sin_nombre")
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .replace(/[^a-zA-Z0-9_-]+/g,"_")
+    .replace(/_+/g,"_")
+    .slice(0,60) || "Sin_nombre";
+}
+function todayKey(d=new Date()){
+  const y=d.getFullYear();
+  const m=String(d.getMonth()+1).padStart(2,"0");
+  const day=String(d.getDate()).padStart(2,"0");
+  return `${y}-${m}-${day}`;
+}
+function dateHuman(d=new Date()){
+  return d.toLocaleDateString("es-AR");
+}
+function timeHuman(d=new Date()){
+  return d.toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit"});
+}
+async function crearPDF(taller){
+  if(!window.jspdf || !window.jspdf.jsPDF) throw new Error("No cargó jsPDF. Revisá internet.");
+  const {jsPDF} = window.jspdf;
+  const doc = new jsPDF({orientation:"portrait",unit:"mm",format:"a4"});
+  const PW=210, PH=297, M=10;
+  const now = new Date();
+  const fecha = dateHuman(now), hora = timeHuman(now);
 
-/* ───────── GENERACIÓN DE PDF ─────────
-   • Página 1: portada con taller, fecha, resultado de válvula.
-   • Páginas 2..N: UNA foto por página, escalada al máximo
-     manteniendo la proporción real (sin recortes ni estiramientos).  */
-async function enviar(){
-  const taller=document.getElementById('taller').value.trim()||'Sin nombre';
-  document.getElementById('ldg').classList.add('on');
-  document.getElementById('ldg').innerHTML='<span class="sp"></span>Preparando PDF…';
-  document.getElementById('sendbtn').disabled=true;
-
-  try{
-
-  if(!window.jspdf||!window.jspdf.jsPDF){
-    throw new Error('Librería jsPDF no disponible. Verificá tu conexión a internet.');
-  }
-  document.getElementById('ldg').innerHTML='<span class="sp"></span>Generando PDF liviano…';
-  const {jsPDF}=window.jspdf;
-  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-  const PW=210, PH=297;
-  const MARGIN=10;
-  const fecha=new Date().toLocaleDateString('es-AR');
-  const hora=new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
-
-  /* ── Encabezado común ── */
-  function cab(){
-    doc.setFillColor(20,20,20);doc.rect(0,0,PW,17,'F');
-    doc.setTextColor(255,255,255);
-    doc.setFontSize(10);doc.setFont('helvetica','bold');
-    doc.text('CRPC — Quiroga Juan Edgardo',MARGIN,7);
-    doc.setFontSize(7);doc.setFont('helvetica','normal');
-    doc.text('NAG-444 (2026) · USO INTERNO',MARGIN,13);
-    doc.text(fecha+'  '+hora,PW-MARGIN,7,{align:'right'});
-    doc.setTextColor(0,0,0);
-  }
-
-  /* ── Pie de página común ── */
-  function pie(pagNum, pagTotal){
-    doc.setFontSize(6.5);doc.setTextColor(150,150,150);
-    doc.text('CRPC Quiroga Juan Edgardo · NAG-444 (2026)', MARGIN, PH-6);
-    doc.text('Pág. '+pagNum+' / '+pagTotal, PW-MARGIN, PH-6, {align:'right'});
-    doc.setTextColor(0,0,0);
-  }
-
-  /* ── Caja de sección (banda gris) ── */
-  function sec(txt,y){
-    doc.setFillColor(235,235,238);doc.roundedRect(MARGIN,y,PW-2*MARGIN,7,1.5,1.5,'F');
-    doc.setFontSize(9);doc.setFont('helvetica','bold');doc.setTextColor(60,60,60);
-    doc.text(txt,MARGIN+3,y+5);doc.setTextColor(0,0,0);
-    return y+10;
-  }
-
-  /* ── Cargo las imágenes UNA sola vez (mantiene proporciones) ── */
-  const imgs={};
+  setWork(true,"Optimizando fotos...");
+  const imgs = {};
   for(const k of KEYS){
-    if(fotos[k]) imgs[k]=await resizeImg(fotos[k]);
+    if(fotos[k]) imgs[k] = await resizeImg(fotos[k]);
   }
-  const fotosPresentes=KEYS.filter(k=>imgs[k]);
-  const TOTAL_PAGS = 1 + fotosPresentes.length;   // portada + 1 por foto
+  const presentes = KEYS.filter(k=>imgs[k]);
+  const totalPages = 1 + presentes.length;
 
-  /* ════════════ PÁGINA 1: PORTADA ════════════ */
+  function cab(){
+    doc.setFillColor(15,15,17);
+    doc.rect(0,0,PW,18,"F");
+    doc.setTextColor(255,255,255);
+    doc.setFont("helvetica","bold");
+    doc.setFontSize(10);
+    doc.text("CRPC — Quiroga Juan Edgardo",M,7);
+    doc.setFont("helvetica","normal");
+    doc.setFontSize(7);
+    doc.text("Registro fotográfico · NAG-444 (2026)",M,13);
+    doc.text(fecha+"  "+hora,PW-M,7,{align:"right"});
+    doc.setTextColor(0,0,0);
+  }
+  function pie(p,t){
+    doc.setFont("helvetica","normal");
+    doc.setFontSize(6.5);
+    doc.setTextColor(130,130,130);
+    doc.text("CRPC Quiroga · Registro fotográfico",M,PH-6);
+    doc.text("Pág. "+p+" / "+t,PW-M,PH-6,{align:"right"});
+    doc.setTextColor(0,0,0);
+  }
+  function sec(txt,y){
+    doc.setFillColor(235,235,238);
+    doc.roundedRect(M,y,PW-2*M,8,2,2,"F");
+    doc.setFont("helvetica","bold");
+    doc.setFontSize(9);
+    doc.setTextColor(55,55,55);
+    doc.text(txt,M+3,y+5.5);
+    doc.setTextColor(0,0,0);
+    return y+12;
+  }
+
   cab();
-
-  /* Bloque de datos del taller */
-  let y=28;
+  let y=29;
   doc.setFillColor(248,248,250);
-  doc.roundedRect(MARGIN,y,PW-2*MARGIN,36,2,2,'F');
+  doc.roundedRect(M,y,PW-2*M,42,2,2,"F");
+  doc.setFontSize(8); doc.setFont("helvetica","normal"); doc.setTextColor(105,105,105);
+  doc.text("TALLER DE MONTAJE",M+5,y+8);
+  doc.setFontSize(16); doc.setFont("helvetica","bold"); doc.setTextColor(0,0,0);
+  doc.text(taller,M+5,y+19,{maxWidth:130});
+  doc.setFontSize(8); doc.setFont("helvetica","normal"); doc.setTextColor(105,105,105);
+  doc.text("FECHA",M+5,y+30);
+  doc.setFontSize(10); doc.setFont("helvetica","bold"); doc.setTextColor(0,0,0);
+  doc.text(fecha+" · "+hora,M+5,y+36);
 
-  doc.setFontSize(8);doc.setFont('helvetica','normal');doc.setTextColor(110,110,110);
-  doc.text('TALLER DE MONTAJE',MARGIN+5,y+7);
-  doc.setFontSize(14);doc.setFont('helvetica','bold');doc.setTextColor(0,0,0);
-  doc.text(taller,MARGIN+5,y+16);
+  doc.setFontSize(8); doc.setFont("helvetica","normal"); doc.setTextColor(105,105,105);
+  doc.text("FOTOS",PW-M-5,y+30,{align:"right"});
+  doc.setFontSize(10); doc.setFont("helvetica","bold"); doc.setTextColor(0,0,0);
+  doc.text(presentes.length+" / 5",PW-M-5,y+36,{align:"right"});
 
-  doc.setFontSize(8);doc.setFont('helvetica','normal');doc.setTextColor(110,110,110);
-  doc.text('FECHA',MARGIN+5,y+25);
-  doc.setFontSize(10);doc.setFont('helvetica','bold');doc.setTextColor(0,0,0);
-  doc.text(fecha+'  ·  '+hora,MARGIN+5,y+31);
-
-  doc.setFontSize(8);doc.setFont('helvetica','normal');doc.setTextColor(110,110,110);
-  doc.text('FOTOS',PW-MARGIN-5,y+25,{align:'right'});
-  doc.setFontSize(10);doc.setFont('helvetica','bold');doc.setTextColor(0,0,0);
-  doc.text(fotosPresentes.length+' / 5',PW-MARGIN-5,y+31,{align:'right'});
-
-  y+=44;
-
-  /* Resultado válvula — grande en portada */
-  if(resultadoValvula==='rech'){
-    doc.setFillColor(180,20,20);
-    doc.roundedRect(MARGIN,y,PW-2*MARGIN,18,2.5,2.5,'F');
-    doc.setFontSize(13);doc.setFont('helvetica','bold');doc.setTextColor(255,255,255);
-    doc.text('VÁLVULA RECHAZADA',PW/2,y+8,{align:'center'});
-    doc.setFontSize(9);doc.setFont('helvetica','normal');
-    doc.text('Fuera de servicio',PW/2,y+14,{align:'center'});
-    doc.setTextColor(0,0,0);
-  } else {
-    doc.setFillColor(10,90,40);
-    doc.roundedRect(MARGIN,y,PW-2*MARGIN,18,2.5,2.5,'F');
-    doc.setFontSize(13);doc.setFont('helvetica','bold');doc.setTextColor(255,255,255);
-    doc.text('VÁLVULA APTA',PW/2,y+8,{align:'center'});
-    doc.setFontSize(9);doc.setFont('helvetica','normal');
-    doc.text('Apta para continuar en servicio',PW/2,y+14,{align:'center'});
-    doc.setTextColor(0,0,0);
+  y+=50;
+  if(resultadoValvula==="rech"){
+    doc.setFillColor(190,28,24);
+    doc.roundedRect(M,y,PW-2*M,19,2.5,2.5,"F");
+    doc.setTextColor(255,255,255);
+    doc.setFont("helvetica","bold"); doc.setFontSize(14);
+    doc.text("VÁLVULA RECHAZADA",PW/2,y+8,{align:"center"});
+    doc.setFont("helvetica","normal"); doc.setFontSize(9);
+    doc.text("Fuera de servicio",PW/2,y+14.5,{align:"center"});
+  }else{
+    doc.setFillColor(10,105,48);
+    doc.roundedRect(M,y,PW-2*M,19,2.5,2.5,"F");
+    doc.setTextColor(255,255,255);
+    doc.setFont("helvetica","bold"); doc.setFontSize(14);
+    doc.text("VÁLVULA APTA",PW/2,y+8,{align:"center"});
+    doc.setFont("helvetica","normal"); doc.setFontSize(9);
+    doc.text("Apta para continuar en servicio",PW/2,y+14.5,{align:"center"});
   }
-  y+=24;
+  doc.setTextColor(0,0,0);
+  y+=28;
 
-  /* Listado de fotos incluidas */
-  y=sec('CONTENIDO DEL INFORME',y);
-  doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(40,40,40);
-  fotosPresentes.forEach((k,i)=>{
-    doc.text('· Pág. '+(i+2)+'  —  '+LABELS[k]+'  ('+SECCION[k]+')', MARGIN+3, y);
-    y+=5.5;
+  y=sec("CONTENIDO DEL INFORME",y);
+  doc.setFont("helvetica","normal"); doc.setFontSize(9); doc.setTextColor(40,40,40);
+  presentes.forEach((k,i)=>{
+    doc.text("• Pág. "+(i+2)+" — "+LABELS[k]+" ("+SECTION[k]+")",M+3,y);
+    y+=6;
   });
-  if(fotosPresentes.length<5){
-    doc.setTextColor(180,80,40);
-    const faltan=KEYS.filter(k=>!imgs[k]).map(k=>LABELS[k]).join(', ');
-    y+=2;
-    doc.setFontSize(8);doc.setFont('helvetica','italic');
-    doc.text('Foto(s) no incluida(s): '+faltan, MARGIN+3, y);
-    doc.setTextColor(0,0,0);
+  const faltan = KEYS.filter(k=>!imgs[k]);
+  if(faltan.length){
+    y+=3;
+    doc.setTextColor(170,80,30);
+    doc.setFont("helvetica","italic"); doc.setFontSize(8);
+    doc.text("Foto(s) no incluida(s): "+faltan.map(k=>LABELS[k]).join(", "),M+3,y,{maxWidth:180});
   }
+  pie(1,totalPages);
 
-  pie(1, TOTAL_PAGS);
-
-  /* ════════════ UNA PÁGINA POR FOTO ════════════
-     Área disponible para la imagen:
-       ancho  = PW - 2*MARGIN
-       alto   = desde y_inicial (debajo del título de sección)
-                hasta PH - 14 (pie de página)
-     Se calcula factor "best-fit" que respeta proporción real.        */
-  for(let i=0;i<fotosPresentes.length;i++){
-    const k=fotosPresentes[i];
-    const im=imgs[k];
-
+  presentes.forEach((k,i)=>{
+    const im = imgs[k];
     doc.addPage();
     cab();
+    let yy = sec(SECTION[k],23);
+    doc.setFont("helvetica","bold");
+    doc.setFontSize(14);
+    doc.setTextColor(0,0,0);
+    doc.text(LABELS[k],M,yy+4);
+    yy += 10;
 
-    /* Etiqueta de sección + título de la foto */
-    let yy=sec(SECCION[k],22);
-    doc.setFontSize(13);doc.setFont('helvetica','bold');doc.setTextColor(0,0,0);
-    doc.text(LABELS[k],MARGIN,yy+4);
-    yy+=10;
-
-    /* ÁREA DISPONIBLE para la imagen */
-    const areaX = MARGIN;
-    const areaY = yy;
-    const areaW = PW - 2*MARGIN;
-    const areaH = PH - yy - 14;   // 14 mm para el pie
-
-    /* BEST-FIT: escala manteniendo proporción exacta */
+    const areaX=M, areaY=yy, areaW=PW-2*M, areaH=PH-yy-14;
     const scale = Math.min(areaW/im.w, areaH/im.h);
-    const drawW = im.w * scale;
-    const drawH = im.h * scale;
-
-    /* Centrar en el área */
-    const drawX = areaX + (areaW - drawW)/2;
-    const drawY = areaY + (areaH - drawH)/2;
-
-    /* Marco sutil detrás de la imagen */
-    doc.setDrawColor(220,220,225);
-    doc.setLineWidth(0.2);
-    doc.rect(drawX-0.5, drawY-0.5, drawW+1, drawH+1);
-
-    doc.addImage(im.d,'JPEG', drawX, drawY, drawW, drawH);
-
-    pie(i+2, TOTAL_PAGS);
-  }
-
-  /* ── Salida ── */
-  const blob=doc.output('blob');
-  const fname='CRPC_'+taller.replace(/\s+/g,'_')+'_'+fecha.replace(/\//g,'-')+'.pdf';
-  const txt_base='*CRPC Quiroga Juan Edgardo*\nTaller: '+taller+'\nFecha: '+fecha+' '+hora+'\n_NAG-444 (2026)_';
-
-  /* ───── SUBIR EL PDF A LA NUBE ─────
-     Esto es lo que permite enviar el PDF por WhatsApp sin adjuntarlo
-     a mano: subimos a Firebase Storage, obtenemos una URL pública,
-     y la incluimos en el texto del mensaje. WhatsApp auto-detecta
-     el link y muestra preview.                                        */
-  let pdfUrl = null;
-  let uploadError = null;
-
-  document.getElementById('ldg').innerHTML='<span class="sp"></span>Subiendo PDF a Firebase…';
-
-  try {
-    pdfUrl = await subirPDFaNube(blob, fname);
-    console.log('PDF subido:', pdfUrl);
-  } catch (e) {
-    uploadError = e.message || 'falló la subida';
-    console.error('Error subiendo PDF:', e);
-  }
-
-  /* Guardar en historial local SIEMPRE (con URL si hay) */
-  await guardarPDF(taller, fecha, hora, blob, fname, pdfUrl);
-
-  /* Resetear la pantalla de loading */
-  document.getElementById('ldg').innerHTML='<span class="sp"></span>Generando PDF…';
-  document.getElementById('ldg').classList.remove('on');
-  document.getElementById('sendbtn').disabled=false;
-
-  /* ── Construir mensaje de WhatsApp ── */
-  const txt = pdfUrl
-    ? txt_base + '\n\n📄 *PDF del informe:*\n' + pdfUrl
-    : txt_base;
-
-  /* ── Si NO se pudo subir, hacer fallback: descargar localmente ── */
-  if (!pdfUrl) {
-    const blobUrl = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = blobUrl; a.download = fname;
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    setTimeout(()=>URL.revokeObjectURL(blobUrl), 5000);
-  }
-
-  /* ── Abrir WhatsApp con el mensaje ── */
-  const waUrl = 'https://wa.me/' + WA + '?text=' + encodeURIComponent(txt);
-  const waLink = document.createElement('a');
-  waLink.href = waUrl;
-  waLink.target = '_blank';
-  waLink.rel = 'noopener';
-  document.body.appendChild(waLink);
-  waLink.click();
-  document.body.removeChild(waLink);
-
-  /* ── Feedback al usuario ── */
-  if (pdfUrl) {
-    showToast('✅ PDF enviado por WhatsApp con link');
-  } else if (uploadError) {
-    showToast('⚠️ ' + uploadError + ' — PDF descargado, adjuntalo a mano');
-  } else {
-    showToast('PDF descargado — adjuntalo en WhatsApp');
-  }
-
-  }catch(err){
-    console.error('Error al generar/enviar PDF:',err);
-    document.getElementById('ldg').innerHTML='<span class="sp"></span>Generando PDF…';
-    document.getElementById('ldg').classList.remove('on');
-    document.getElementById('sendbtn').disabled=false;
-    showToast('❌ Error: '+(err.message||'no se pudo generar el PDF'));
-  }
-}
-
-/* ───────── INDEXEDDB HISTORIAL ───────── */
-const DB='crpc_db', ST='pdfs';
-
-function abrirDB(){
-  return new Promise((res,rej)=>{
-    const r=indexedDB.open(DB,1);
-    r.onupgradeneeded=e=>e.target.result.createObjectStore(ST,{keyPath:'id',autoIncrement:true});
-    r.onsuccess=e=>res(e.target.result);
-    r.onerror=rej;
+    const drawW = im.w*scale, drawH=im.h*scale;
+    const drawX = areaX + (areaW-drawW)/2;
+    const drawY = areaY + (areaH-drawH)/2;
+    doc.setDrawColor(215,215,220);
+    doc.setLineWidth(.25);
+    doc.rect(drawX-.5,drawY-.5,drawW+1,drawH+1);
+    doc.addImage(im.d,"JPEG",drawX,drawY,drawW,drawH);
+    pie(i+2,totalPages);
   });
+
+  const blob = doc.output("blob");
+  const fname = "CRPC_"+safeName(taller)+"_"+todayKey(now)+"_"+String(now.getHours()).padStart(2,"0")+String(now.getMinutes()).padStart(2,"0")+".pdf";
+  return {blob,fname,fecha,hora,ts:Date.now(),dateKey:todayKey(now),fotosCount:presentes.length};
 }
 
-async function guardarPDF(taller,fecha,hora,blob,fname,url){
-  const ts=Date.now();
-  const registro={
-    taller, fecha, hora, fname, url:url||null, ts,
-    resultadoValvula, fotos:KEYS.filter(k=>fotos[k]).map(k=>LABELS[k]),
-    blob
-  };
-
-  const db=await abrirDB();
-  const tx=db.transaction(ST,'readwrite');
-  tx.objectStore(ST).add(registro);
-  await new Promise(r=>{tx.oncomplete=r;});
-  renderHist();
+/* =========================================================
+   FIREBASE STORAGE
+   ========================================================= */
+function withTimeout(promise, ms){
+  return Promise.race([
+    promise,
+    new Promise((_,rej)=>setTimeout(()=>rej(new Error("Firebase tardó demasiado. Probá con mejor señal o menos fotos.")),ms))
+  ]);
+}
+async function subirPDF(blob,fname){
+  if(!firebaseReady) throw new Error("Firebase no está inicializado.");
+  const path = "crpc/pdfs/" + Date.now() + "_" + fname;
+  const ref = firebase.storage().ref(path);
+  const upload = ref.put(blob,{contentType:"application/pdf",cacheControl:"public,max-age=31536000"});
+  const snap = await withTimeout(upload, UPLOAD_TIMEOUT);
+  const url = await withTimeout(snap.ref.getDownloadURL(), 10000);
+  return {url,path};
 }
 
-async function cargarPDFs(){
-  const db=await abrirDB();
-  return new Promise(res=>{
-    const r=db.transaction(ST).objectStore(ST).getAll();
-    r.onsuccess=e=>res([...e.target.result].reverse());
-  });
+/* =========================================================
+   HISTORIAL LOCAL
+   ========================================================= */
+const HIST_KEY = "crpc_historial_links_v2";
+function getHist(){
+  try{return JSON.parse(localStorage.getItem(HIST_KEY)||"[]")}catch(e){return []}
 }
-
-async function eliminarPDF(id){
-  const db=await abrirDB();
-  const tx=db.transaction(ST,'readwrite');
-  tx.objectStore(ST).delete(id);
-  await new Promise(r=>{tx.oncomplete=r;});
-  renderHist();
+function setHist(arr){
+  localStorage.setItem(HIST_KEY,JSON.stringify(arr));
 }
-
-async function borrarTodo(){
-  if(!confirm('¿Borrar todo el historial?')) return;
-  const db=await abrirDB();
-  const tx=db.transaction(ST,'readwrite');
-  tx.objectStore(ST).clear();
-  await new Promise(r=>{tx.oncomplete=r;});
-  renderHist();
+function addHist(item){
+  const arr = getHist();
+  arr.unshift(item);
+  setHist(arr.slice(0,300));
 }
-
-async function borrarHoy(){
-  if(!confirm('¿Limpiar solo los registros de hoy en este celular? Los PDF ya subidos quedan en Firebase.')) return;
-  const db=await abrirDB();
-  const items=await cargarPDFs();
-  const hoy=new Date().toLocaleDateString('es-AR');
-  const tx=db.transaction(ST,'readwrite');
-  const store=tx.objectStore(ST);
-  let borrados=0;
-  for(const it of items){
-    if(it.fecha===hoy){ store.delete(it.id); borrados++; }
-  }
-  await new Promise(r=>{tx.oncomplete=r;});
-  renderHist();
-  showToast(borrados ? 'Registros de hoy limpiados: '+borrados : 'No había registros de hoy');
+function sameDay(ts){
+  return todayKey(new Date(ts)) === todayKey(new Date());
 }
+function inWeek(ts){
+  return Date.now() - ts <= 7*24*60*60*1000;
+}
+function renderHist(){
+  const q = (document.getElementById("histSearch")?.value||"").trim().toLowerCase();
+  let arr = getHist();
+  const todayCount = arr.filter(it=>sameDay(it.ts)).length;
+  if(filter==="hoy") arr = arr.filter(it=>sameDay(it.ts));
+  if(filter==="semana") arr = arr.filter(it=>inWeek(it.ts));
+  if(q) arr = arr.filter(it=>(it.taller||"").toLowerCase().includes(q));
+  document.getElementById("statCount").textContent = arr.length;
+  document.getElementById("statToday").textContent = todayCount;
 
-async function renderHist(){
-  const items=await cargarPDFs();
-  const el=document.getElementById('histList');
-  if(!items.length){
-    el.innerHTML='<div class="hist-empty">Sin registros aún</div>';
+  const el = document.getElementById("histList");
+  if(!arr.length){
+    el.innerHTML = '<div class="emptyHist">Sin registros para mostrar.</div>';
     return;
   }
-  el.innerHTML=items.map(it=>`
-    <div class="hitem">
-      <div class="hitem-info">
-        <div class="hitem-taller">🏭 ${it.taller||'Sin nombre'}</div>
-        <div class="hitem-meta">${it.fecha} ${it.hora} &nbsp;·&nbsp; ${it.blob ? (it.blob.size/1024).toFixed(0)+' KB · ' : ''}<span class="${it.url?'link-ok':'link-no'}">${it.url?'LINK OK':'SIN LINK'}</span></div>
+  el.innerHTML = arr.map(it=>{
+    const badgeClass = it.resultado === "rech" ? "rech" : "ok";
+    const badgeText = it.resultado === "rech" ? "RECHAZADA" : "APTA";
+    return `
+      <div class="hitem">
+        <div class="hTop">
+          <div style="min-width:0">
+            <div class="hTitle">🏭 ${escapeHtml(it.taller || "Sin nombre")}</div>
+            <div class="hDate">${escapeHtml(it.fecha)} ${escapeHtml(it.hora)} · ${it.fotosCount || 0}/5 fotos</div>
+          </div>
+          <div class="hBadge ${badgeClass}">${badgeText}</div>
+        </div>
+        <div class="hLink">${escapeHtml(it.url || "Sin link")}</div>
+        <div class="hActions">
+          <button onclick="abrirLink('${it.id}')">Abrir</button>
+          <button onclick="copiarLink('${it.id}')">Copiar</button>
+          <button onclick="reenviarLink('${it.id}')">WhatsApp</button>
+        </div>
+        <div class="hActions" style="grid-template-columns:1fr">
+          <button class="del" onclick="eliminarRegistro('${it.id}')">Eliminar registro local</button>
+        </div>
       </div>
-      <div class="hitem-btns">
-        ${it.url ? `<button class="hbtn hbtn-link" title="Copiar link" onclick="copiarLink(${it.id})">🔗</button>` : ''}
-        <button class="hbtn" title="Compartir" onclick="compartirHist(${it.id})">📲</button>
-        ${it.blob ? `<button class="hbtn" title="Descargar" onclick="descargarHist(${it.id})">⬇️</button>` : ''}
-        <button class="hbtn hbtn-del" title="Eliminar" onclick="eliminarPDF(${it.id})">🗑️</button>
-      </div>
-    </div>`).join('');
+    `;
+  }).join("");
 }
-
-async function obtenerItemLocal(id){
-  const db=await abrirDB();
-  return await new Promise(r=>{const q=db.transaction(ST).objectStore(ST).get(id);q.onsuccess=e=>r(e.target.result);});
+function escapeHtml(s){
+  return String(s||"").replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
 }
-
-async function copiarTexto(txt){
-  try{ await navigator.clipboard.writeText(txt); showToast('Link copiado'); }
-  catch(e){ prompt('Copiá el link:', txt); }
+function findHist(id){
+  return getHist().find(it=>it.id===id);
 }
-
-async function copiarLink(id){
-  const it=await obtenerItemLocal(id);
-  if(it && it.url) copiarTexto(it.url);
-  else showToast('Ese registro no tiene link');
-}
-
-async function copiarUltimoLink(){
-  const items=await cargarPDFs();
-  const it=items.find(x=>x.url);
-  if(it) copiarTexto(it.url);
-  else showToast('No hay links guardados');
-}
-
-async function compartirHist(id){
-  const db=await abrirDB();
-  const it=await obtenerItemLocal(id);
-  const base='*CRPC Quiroga Juan Edgardo*\nTaller: '+it.taller+'\nFecha: '+it.fecha+' '+it.hora+'\n_NAG-444 (2026)_';
-
-  /* Si ya tiene link generado → usar ese */
-  let url=it.url;
-
-  /* Si no tiene link local → intentar subir el PDF otra vez */
-  if(!url && firebaseReady){
-    try{
-      url=await subirPDFaNube(it.blob, it.fname);
-      /* Actualizar el registro con la URL */
-      const tx=db.transaction(ST,'readwrite');
-      tx.objectStore(ST).put({...it, url});
-      await new Promise(r=>{tx.oncomplete=r;});
-    }catch(e){
-      console.error('No se pudo subir:',e);
-    }
+async function copyText(txt){
+  if(!txt) throw new Error("No hay texto para copiar.");
+  if(navigator.clipboard && window.isSecureContext){
+    await navigator.clipboard.writeText(txt);
+  }else{
+    const ta=document.createElement("textarea");
+    ta.value=txt; document.body.appendChild(ta); ta.select();
+    document.execCommand("copy"); document.body.removeChild(ta);
   }
-
-  const txt = url ? base + '\n\n📄 *PDF del informe:*\n' + url : base;
-
-  /* Abrir WhatsApp con el link */
-  const waLink=document.createElement('a');
-  waLink.href='https://wa.me/'+WA+'?text='+encodeURIComponent(txt);
-  waLink.target='_blank';
-  waLink.rel='noopener';
-  document.body.appendChild(waLink);
-  waLink.click();
-  document.body.removeChild(waLink);
-
-  if(url) showToast('✅ Link enviado por WhatsApp');
-  else { descargarHist(id); showToast('⚠️ Sin link en la nube — PDF descargado'); }
+}
+function abrirLink(id){
+  const it=findHist(id); if(!it||!it.url) return toast("No hay link");
+  window.open(it.url,"_blank","noopener");
+}
+async function copiarLink(id){
+  const it=findHist(id); if(!it||!it.url) return toast("No hay link");
+  try{await copyText(it.url); toast("Link copiado")}catch(e){toast("No se pudo copiar")}
+}
+function reenviarLink(id){
+  const it=findHist(id); if(!it) return;
+  const txt = buildWhatsAppText(it.taller,it.fecha,it.hora,it.url,it.resultado);
+  window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(txt),"_blank","noopener");
+}
+function eliminarRegistro(id){
+  if(!confirm("¿Eliminar este registro local?")) return;
+  setHist(getHist().filter(it=>it.id!==id));
+  renderHist();
+}
+function limpiarDia(){
+  if(!confirm("¿Limpiar los registros locales de hoy? Los PDF subidos quedan en Firebase.")) return;
+  setHist(getHist().filter(it=>!sameDay(it.ts)));
+  renderHist();
+  toast("Día limpiado");
+}
+function limpiarTodo(){
+  if(!confirm("¿Borrar TODO el historial local? Los PDF subidos quedan en Firebase.")) return;
+  setHist([]);
+  renderHist();
+  toast("Historial borrado");
+}
+async function copiarUltimoLink(){
+  if(!ultimoLink) return toast("Todavía no hay link generado");
+  try{await copyText(ultimoLink); toast("Último link copiado")}catch(e){toast("No se pudo copiar")}
 }
 
-async function descargarHist(id){
-  const db=await abrirDB();
-  const it=await obtenerItemLocal(id);
-  const url=URL.createObjectURL(it.blob);
-  const a=document.createElement('a');a.href=url;a.download=it.fname;a.click();
-  setTimeout(()=>URL.revokeObjectURL(url),2000);
+/* =========================================================
+   ENVIAR
+   ========================================================= */
+function buildWhatsAppText(taller,fecha,hora,url,resultado){
+  const estado = resultado === "rech" ? "VÁLVULA RECHAZADA" : "VÁLVULA APTA";
+  return "*CRPC Quiroga Juan Edgardo*\\n" +
+    "Taller: " + taller + "\\n" +
+    "Fecha: " + fecha + " " + hora + "\\n" +
+    "Resultado: " + estado + "\\n" +
+    "_NAG-444 (2026)_\\n\\n" +
+    "📄 *PDF del informe:*\\n" + (url || "Sin link");
+}
+async function enviar(){
+  const btn = document.getElementById("sendBtn");
+  const taller = (document.getElementById("taller").value||"").trim() || "Sin nombre";
+  const n = KEYS.filter(k=>fotos[k]).length;
+  if(n < 4) return toast("Cargá mínimo 4 fotos");
+  btn.disabled = true;
+
+  try{
+    setWork(true,"Generando PDF en alta calidad...");
+    const pdf = await crearPDF(taller);
+
+    setWork(true,"Subiendo PDF a Firebase Storage...");
+    const up = await subirPDF(pdf.blob, pdf.fname);
+
+    ultimoLink = up.url;
+    localStorage.setItem("crpc_ultimo_link", ultimoLink);
+
+    const item = {
+      id: String(Date.now()) + "_" + Math.random().toString(16).slice(2),
+      taller,
+      fecha: pdf.fecha,
+      hora: pdf.hora,
+      ts: pdf.ts,
+      dateKey: pdf.dateKey,
+      fotosCount: pdf.fotosCount,
+      resultado: resultadoValvula,
+      url: up.url,
+      path: up.path,
+      fname: pdf.fname
+    };
+    addHist(item);
+
+    setWork(true,"Abriendo WhatsApp con el link...");
+    const txt = buildWhatsAppText(taller,pdf.fecha,pdf.hora,up.url,resultadoValvula);
+    window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(txt),"_blank","noopener");
+
+    toast("PDF subido y link guardado");
+    setWork(false);
+
+    limpiarFormulario(false);
+    renderHist();
+
+  }catch(e){
+    console.error(e);
+    updateDebug("ERROR: "+(e.message||e));
+    setWork(false);
+    toast("Error: "+(e.message||"no se pudo enviar"));
+
+    /* Fallback: si el PDF se creó pero falló la subida, no lo tenemos fuera de crearPDF.
+       Para no re-generar sin aviso, hacemos una descarga simple reintentando creación. */
+    try{
+      setWork(true,"Falló Firebase. Preparando descarga local...");
+      const pdf = await crearPDF(taller);
+      const a=document.createElement("a");
+      a.href=URL.createObjectURL(pdf.blob);
+      a.download=pdf.fname;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(()=>URL.revokeObjectURL(a.href),3000);
+      toast("PDF descargado. Adjuntalo manualmente si hace falta.");
+    }catch(e2){
+      console.error(e2);
+    }finally{
+      setWork(false);
+    }
+  }finally{
+    actualizar();
+  }
 }
 
-
-window.addEventListener('unhandledrejection', function(e){
-  console.error('Promesa rechazada:', e.reason);
-  document.getElementById('ldg').innerHTML='<span class="sp"></span>Generando PDF…';
-  document.getElementById('ldg').classList.remove('on');
-  document.getElementById('sendbtn').disabled=false;
-  showToast('Error: ' + ((e.reason && e.reason.message) || 'fallo inesperado'));
-});
-
+/* =========================================================
+   ARRANQUE
+   ========================================================= */
+actualizar();
 renderHist();
-
 </script>
 </body>
 </html>
