@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="CRPC">
+<meta name="theme-color" content="#000000">
+<link id="manifest-link" rel="manifest">
+<link id="apple-icon" rel="apple-touch-icon">
+<title>CRPC Quiroga - PWA Links</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#000;color:#fff;max-width:430px;margin:0 auto;padding-bottom:88px;}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 14px 10px;background:#111;}
+.hdr h1{font-size:18px;font-weight:700;letter-spacing:-.4px;}
+.hdr p{font-size:11px;color:#555;margin-top:1px;}
+.taller{display:flex;align-items:center;gap:8px;background:#1c1c1e;margin:8px 10px;border-radius:12px;padding:11px 14px;}
+.taller label{font-size:13px;color:#777;white-space:nowrap;}
+.taller input{flex:1;background:transparent;border:none;outline:none;color:#fff;font-size:16px;font-weight:500;min-width:0;}
+.taller input::placeholder{color:#3a3a3a;}
+.slbl{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#555;margin:10px 10px 5px;}
+.grid-5{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin:0 10px;}
+.grid-5 .slot{aspect-ratio:4/3;}
+.solo{grid-column:1/3;width:50%;justify-self:center;}
+.slot{position:relative;overflow:hidden;border-radius:10px;background:#111;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:1.5px dashed #252525;}
+.slot .ico{font-size:26px;line-height:1;}
+.slot .lbl{font-size:10.5px;color:#4a4a4a;text-align:center;padding:0 8px;line-height:1.3;}
+.slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none;}
+.slot.ok img{display:block;}
+.slot.ok .ico,.slot.ok .lbl{display:none;}
+.slot.ok{border-color:#25d366;border-style:solid;}
+.badge{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.72));padding:12px 8px 5px;font-size:10px;color:#ccc;text-align:center;display:none;}
+.slot.ok .badge{display:block;}
+.tick{position:absolute;top:6px;right:6px;background:#25d366;width:19px;height:19px;border-radius:50%;font-size:11px;display:none;align-items:center;justify-content:center;font-weight:700;}
+.slot.ok .tick{display:flex;}
+input[type=file]{display:none;}
+.inst{display:none;background:#1c1c1e;border-radius:12px;margin:8px 10px 0;padding:11px 14px;align-items:center;gap:10px;}
+.inst.show{display:flex;}
+.inst p{flex:1;font-size:12px;color:#aaa;line-height:1.4;}
+.inst button{background:#007aff;color:#fff;border:none;border-radius:9px;padding:7px 12px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;}
+.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;padding:10px 10px 24px;background:linear-gradient(transparent,#000 22%);}
+.sbtn{width:100%;border:none;border-radius:14px;padding:15px;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;background:#25d366;color:#fff;transition:opacity .15s;}
+.sbtn:active{opacity:.75;}
+.sbtn:disabled{background:#1c1c1e;color:#3a3a3a;pointer-events:none;}
+.cnt{background:rgba(0,0,0,.28);border-radius:20px;padding:2px 9px;font-size:12px;}
+.ldg{display:none;text-align:center;padding:14px;color:#666;font-size:14px;}
+.ldg.on{display:block;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.sp{display:inline-block;width:18px;height:18px;border:2px solid #333;border-top-color:#25d366;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px;}
+.toast{position:fixed;bottom:95px;left:50%;transform:translateX(-50%);background:#1c1c1e;color:#fff;padding:9px 16px;border-radius:20px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;z-index:999;border:1px solid #2a2a2a;}
+.toast.show{opacity:1;}
+
+.slbl-hist{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#555;margin:14px 10px 5px;display:flex;align-items:center;justify-content:space-between;}
+.slbl-hist button{font-size:11px;color:#ff453a;background:none;border:none;cursor:pointer;font-weight:600;letter-spacing:0;}
+.hist-list{margin:0 10px 6px;display:flex;flex-direction:column;gap:6px;}
+.hist-empty{color:#3a3a3a;font-size:13px;text-align:center;padding:18px 0;margin:0 10px;}
+.hitem{background:#1c1c1e;border-radius:10px;padding:11px 12px;display:flex;align-items:center;gap:10px;}
+.hitem-info{flex:1;min-width:0;}
+.hitem-taller{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.hitem-meta{font-size:11px;color:#666;margin-top:2px;}
+.hitem-btns{display:flex;gap:6px;flex-shrink:0;}
+.hbtn{background:#2c2c2e;border:none;border-radius:8px;width:34px;height:34px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.hbtn:active{opacity:.6;}
+.hbtn-del{background:#3a1a1a;}
+.hbtn-link{background:#12351f;}
+.cloud-row{display:flex;gap:6px;margin:0 10px 8px;}
+.cloud-row button{flex:1;background:#1c1c1e;color:#aaa;border:1px solid #2a2a2a;border-radius:9px;padding:9px;font-size:12px;font-weight:700;cursor:pointer;}
+.cloud-row button:active{opacity:.7;}
+.link-ok{color:#25d366;font-weight:700;}
+.link-no{color:#ff9f0a;font-weight:700;}
+
+.val-result{display:flex;gap:6px;margin:7px 10px 0;}
+.vbtn{flex:1;border:1.5px solid #2a2a2a;border-radius:10px;padding:10px 6px;text-align:center;cursor:pointer;font-size:12px;font-weight:600;background:#1c1c1e;color:#555;transition:all .2s;}
+.vbtn.ok{background:#0d2e18;border-color:#25d366;color:#25d366;}
+.vbtn.rech{background:#2e0d0d;border-color:#ff453a;color:#ff453a;}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div>
+    <h1>CRPC Quiroga</h1>
+    <p>Registro fotográfico · PWA + links Firebase</p>
+  </div>
+</div>
+
+<div class="inst" id="instBar">
+  <p>Instalá la app en el celular</p>
+  <button onclick="instalar()">Instalar</button>
+</div>
+
+<div class="taller">
+  <label>Taller</label>
+  <input type="text" id="taller" placeholder="Nombre del taller" autocomplete="off" autocorrect="off" autocapitalize="words">
+</div>
+
+<div class="slbl">Cilindro</div>
+<div class="grid-5">
+  <div class="slot" id="btn_s" onclick="sacar('s')">
+    <img id="img_s">
+    <span class="ico">🔢</span>
+    <span class="lbl">N° serie y marcado</span>
+    <div class="tick">✓</div>
+    <div class="badge">N° serie — repetir</div>
+  </div>
+  <div class="slot" id="btn_v" onclick="sacar('v')">
+    <img id="img_v">
+    <span class="ico">📦</span>
+    <span class="lbl">Volumen / capacidad</span>
+    <div class="tick">✓</div>
+    <div class="badge">Volumen — repetir</div>
+  </div>
+  <div class="slot solo" id="btn_g" onclick="sacar('g')">
+    <img id="img_g">
+    <span class="ico">🔩</span>
+    <span class="lbl">Vista general</span>
+    <div class="tick">✓</div>
+    <div class="badge">Vista general — repetir</div>
+  </div>
+</div>
+
+<div class="slbl" style="margin-top:11px;">Válvula</div>
+<div class="grid-5">
+  <div class="slot" id="btn_vm" onclick="sacar('vm')">
+    <img id="img_vm">
+    <span class="ico">🔧</span>
+    <span class="lbl">Válvula montada</span>
+    <div class="tick">✓</div>
+    <div class="badge">Válvula montada — repetir</div>
+  </div>
+  <div class="slot" id="btn_vd" onclick="sacar('vd')">
+    <img id="img_vd">
+    <span class="ico">🏷️</span>
+    <span class="lbl">Marcado válvula</span>
+    <div class="tick">✓</div>
+    <div class="badge">Marcado válvula — repetir</div>
+  </div>
+</div>
+
+
+<div class="slbl-hist">
+  <span>Historial local</span>
+  <button onclick="borrarHoy()">Limpiar día</button>
+</div>
+<div class="cloud-row">
+  <button onclick="copiarUltimoLink()">🔗 Copiar último link</button>
+  <button onclick="borrarTodo()">🗑️ Borrar todo</button>
+</div>
+<div class="hist-list" id="histList">
+  <div class="hist-empty">Sin registros aún</div>
+</div>
+
+<div class="val-result">
+  <div class="vbtn ok" id="vb_ok" onclick="setValvula('ok')">✅ Válvula apta</div>
+  <div class="vbtn" id="vb_rech" onclick="setValvula('rech')">⛔ Válvula rechazada</div>
+</div>
+
+<input type="file" accept="image/*" capture="environment" id="fi_s"  onchange="cargar(this,'s')">
+<input type="file" accept="image/*" capture="environment" id="fi_v"  onchange="cargar(this,'v')">
+<input type="file" accept="image/*" capture="environment" id="fi_g"  onchange="cargar(this,'g')">
+<input type="file" accept="image/*" capture="environment" id="fi_vm" onchange="cargar(this,'vm')">
+<input type="file" accept="image/*" capture="environment" id="fi_vd" onchange="cargar(this,'vd')">
+
+<div class="ldg" id="ldg"><span class="sp"></span>Generando PDF…</div>
+
+<div class="bottom">
+  <button class="sbtn" id="sendbtn" onclick="enviar()" disabled>
+    <span>📲 Enviar a WhatsApp</span>
+    <span class="cnt" id="cnt">0 / 5</span>
+  </button>
+</div>
+<div class="toast" id="toast"></div>
+
+<!-- jsPDF library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<!-- Firebase Storage -->
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-storage-compat.js"></script>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   CONFIG DE FIREBASE STORAGE — Proyecto: fotoscrpc
+   App lista para subir PDF y mandar link por WhatsApp.
+   ═══════════════════════════════════════════════════════════════ */
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyALJ4g1G6LybzkLk2ZI97tJ9E8AdW2pzAE",
+  authDomain: "fotoscrpc.firebaseapp.com",
+  projectId: "fotoscrpc",
+  storageBucket: "fotoscrpc.firebasestorage.app",
+  messagingSenderId: "176606790230",
+  appId: "1:176606790230:web:fbe1be2d1f947ea69cf1f7"
+};
+
+/* Inicializar Firebase (solo si la config está pegada) */
+let firebaseReady = false;
+if (!FIREBASE_CONFIG.apiKey.includes('PEGAR_AQUI')) {
+  try {
+    firebase.initializeApp(FIREBASE_CONFIG);
+    firebaseReady = true;
+    console.log('✓ Firebase OK');
+  } catch (e) {
+    console.error('Firebase error:', e);
+  }
+} else {
+  console.warn('⚠️ Falta pegar config de Firebase en index.html');
+}
+
+/* Sube un PDF a Firebase Storage y devuelve la URL pública.
+   La URL incluye un token aleatorio: solo quien tiene el link puede
+   ver el archivo (no aparece listado en ningún lado).                */
+function timeoutPromise(ms, msg){
+  return new Promise((_, rej)=>setTimeout(()=>rej(new Error(msg)), ms));
+}
+
+async function subirPDFaNube(blob, fname) {
+  if (!firebaseReady) {
+    throw new Error('Firebase no configurado');
+  }
+
+  if (!navigator.onLine) {
+    throw new Error('Sin internet');
+  }
+
+  const limpio = fname
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-zA-Z0-9_.-]/g, '_');
+
+  const path = 'crpc/pdfs/' + Date.now() + '_' + limpio;
+  const ref  = firebase.storage().ref(path);
+
+  const snap = await Promise.race([
+    ref.put(blob, { contentType: 'application/pdf' }),
+    timeoutPromise(20000, 'Firebase tardó demasiado. Revisá reglas de Storage o conexión.')
+  ]);
+
+  return await Promise.race([
+    snap.ref.getDownloadURL(),
+    timeoutPromise(8000, 'Se subió, pero no devolvió link')
+  ]);
+}
+
+/* ───────── ESTADO ───────── */
+let resultadoValvula = 'ok';
+function setValvula(v){
+  resultadoValvula = v;
+  document.getElementById('vb_ok').className   = v==='ok'   ? 'vbtn ok'   : 'vbtn';
+  document.getElementById('vb_rech').className = v==='rech' ? 'vbtn rech' : 'vbtn';
+}
+const WA='543515144679';
+const KEYS=['s','v','g','vm','vd'];
+const LABELS={
+  s:  'N° de serie y marcado',
+  v:  'Volumen / capacidad',
+  g:  'Vista general del cilindro',
+  vm: 'Válvula montada',
+  vd: 'Marcado de válvula'
+};
+const SECCION={
+  s:'CILINDRO', v:'CILINDRO', g:'CILINDRO',
+  vm:'VÁLVULA', vd:'VÁLVULA'
+};
+const fotos={};
+let deferredPrompt=null;
+
+/* ───────── PWA ───────── */
+(function initPWA(){
+  const c=document.createElement('canvas');
+  c.width=c.height=192;
+  const x=c.getContext('2d');
+  x.fillStyle='#1c1c1e';
+  x.beginPath();x.roundRect(0,0,192,192,40);x.fill();
+  x.fillStyle='#25d366';
+  x.font='bold 68px -apple-system,sans-serif';
+  x.textAlign='center';x.textBaseline='middle';
+  x.fillText('CQ',96,85);
+  x.fillStyle='#666';
+  x.font='bold 20px -apple-system,sans-serif';
+  x.fillText('CRPC',96,148);
+  const ico=c.toDataURL('image/png');
+  document.getElementById('apple-icon').href=ico;
+  const m={name:'CRPC Quiroga',short_name:'CRPC',start_url:'./',display:'standalone',
+    background_color:'#000000',theme_color:'#000000',orientation:'portrait',
+    icons:[{src:ico,sizes:'192x192',type:'image/png',purpose:'any maskable'}]};
+  const blob=new Blob([JSON.stringify(m)],{type:'application/manifest+json'});
+  document.getElementById('manifest-link').href=URL.createObjectURL(blob);
+})();
+
+/* Service Worker para instalar como app en Android/iPhone.
+   Subí también el archivo sw.js en la misma carpeta que este index.html. */
+if('serviceWorker' in navigator){
+  window.addEventListener('load', async () => {
+    try {
+      const reg = await navigator.serviceWorker.register('./sw.js?v=3');
+      console.log('✓ PWA activa', reg.scope);
+    } catch(e){
+      console.warn('PWA sin service worker:', e);
+    }
+  });
+}
+
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();deferredPrompt=e;
+  document.getElementById('instBar').classList.add('show');
+});
+window.addEventListener('appinstalled',()=>document.getElementById('instBar').classList.remove('show'));
+function instalar(){
+  if(!deferredPrompt)return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(()=>{deferredPrompt=null;document.getElementById('instBar').classList.remove('show');});
+}
+
+/* ───────── CAPTURA ───────── */
+function sacar(k){document.getElementById('fi_'+k).click();}
+
+function cargar(inp,k){
+  const f=inp.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    fotos[k]=e.target.result;
+    document.getElementById('img_'+k).src=e.target.result;
+    document.getElementById('btn_'+k).classList.add('ok');
+    actualizar();
+  };
+  r.readAsDataURL(f);
+}
+
+function actualizar(){
+  const n=KEYS.filter(k=>fotos[k]).length;
+  document.getElementById('cnt').textContent=n+' / 5';
+  document.getElementById('sendbtn').disabled=(n<4);
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+/* ───────── REDIMENSIONADO de IMAGEN ─────────
+   Reduce el tamaño en píxeles de la imagen original para que el PDF
+   no pese demasiado, pero MANTIENE la proporción original.            */
+async function resizeImg(src){
+  return new Promise(res=>{
+    const img=new Image();
+    img.onload=()=>{
+      const MAX=2400;
+      let w=img.naturalWidth,h=img.naturalHeight;
+      if(w>MAX){h=Math.round(h*MAX/w);w=MAX;}
+      if(h>MAX){w=Math.round(w*MAX/h);h=MAX;}
+      const c=document.createElement('canvas');
+      c.width=w;c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      res({d:c.toDataURL('image/jpeg',0.92),w,h});
+    };
+    img.src=src;
+  });
+}
+
+/* ───────── GENERACIÓN DE PDF ─────────
+   • Página 1: portada con taller, fecha, resultado de válvula.
+   • Páginas 2..N: UNA foto por página, escalada al máximo
+     manteniendo la proporción real (sin recortes ni estiramientos).  */
+async function enviar(){
+  const taller=document.getElementById('taller').value.trim()||'Sin nombre';
+  document.getElementById('ldg').classList.add('on');
+  document.getElementById('ldg').innerHTML='<span class="sp"></span>Preparando PDF…';
+  document.getElementById('sendbtn').disabled=true;
+
+  try{
+
+  if(!window.jspdf||!window.jspdf.jsPDF){
+    throw new Error('Librería jsPDF no disponible. Verificá tu conexión a internet.');
+  }
+  document.getElementById('ldg').innerHTML='<span class="sp"></span>Generando PDF liviano…';
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  const PW=210, PH=297;
+  const MARGIN=10;
+  const fecha=new Date().toLocaleDateString('es-AR');
+  const hora=new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+
+  /* ── Encabezado común ── */
+  function cab(){
+    doc.setFillColor(20,20,20);doc.rect(0,0,PW,17,'F');
+    doc.setTextColor(255,255,255);
+    doc.setFontSize(10);doc.setFont('helvetica','bold');
+    doc.text('CRPC — Quiroga Juan Edgardo',MARGIN,7);
+    doc.setFontSize(7);doc.setFont('helvetica','normal');
+    doc.text('NAG-444 (2026) · USO INTERNO',MARGIN,13);
+    doc.text(fecha+'  '+hora,PW-MARGIN,7,{align:'right'});
+    doc.setTextColor(0,0,0);
+  }
+
+  /* ── Pie de página común ── */
+  function pie(pagNum, pagTotal){
+    doc.setFontSize(6.5);doc.setTextColor(150,150,150);
+    doc.text('CRPC Quiroga Juan Edgardo · NAG-444 (2026)', MARGIN, PH-6);
+    doc.text('Pág. '+pagNum+' / '+pagTotal, PW-MARGIN, PH-6, {align:'right'});
+    doc.setTextColor(0,0,0);
+  }
+
+  /* ── Caja de sección (banda gris) ── */
+  function sec(txt,y){
+    doc.setFillColor(235,235,238);doc.roundedRect(MARGIN,y,PW-2*MARGIN,7,1.5,1.5,'F');
+    doc.setFontSize(9);doc.setFont('helvetica','bold');doc.setTextColor(60,60,60);
+    doc.text(txt,MARGIN+3,y+5);doc.setTextColor(0,0,0);
+    return y+10;
+  }
+
+  /* ── Cargo las imágenes UNA sola vez (mantiene proporciones) ── */
+  const imgs={};
+  for(const k of KEYS){
+    if(fotos[k]) imgs[k]=await resizeImg(fotos[k]);
+  }
+  const fotosPresentes=KEYS.filter(k=>imgs[k]);
+  const TOTAL_PAGS = 1 + fotosPresentes.length;   // portada + 1 por foto
+
+  /* ════════════ PÁGINA 1: PORTADA ════════════ */
+  cab();
+
+  /* Bloque de datos del taller */
+  let y=28;
+  doc.setFillColor(248,248,250);
+  doc.roundedRect(MARGIN,y,PW-2*MARGIN,36,2,2,'F');
+
+  doc.setFontSize(8);doc.setFont('helvetica','normal');doc.setTextColor(110,110,110);
+  doc.text('TALLER DE MONTAJE',MARGIN+5,y+7);
+  doc.setFontSize(14);doc.setFont('helvetica','bold');doc.setTextColor(0,0,0);
+  doc.text(taller,MARGIN+5,y+16);
+
+  doc.setFontSize(8);doc.setFont('helvetica','normal');doc.setTextColor(110,110,110);
+  doc.text('FECHA',MARGIN+5,y+25);
+  doc.setFontSize(10);doc.setFont('helvetica','bold');doc.setTextColor(0,0,0);
+  doc.text(fecha+'  ·  '+hora,MARGIN+5,y+31);
+
+  doc.setFontSize(8);doc.setFont('helvetica','normal');doc.setTextColor(110,110,110);
+  doc.text('FOTOS',PW-MARGIN-5,y+25,{align:'right'});
+  doc.setFontSize(10);doc.setFont('helvetica','bold');doc.setTextColor(0,0,0);
+  doc.text(fotosPresentes.length+' / 5',PW-MARGIN-5,y+31,{align:'right'});
+
+  y+=44;
+
+  /* Resultado válvula — grande en portada */
+  if(resultadoValvula==='rech'){
+    doc.setFillColor(180,20,20);
+    doc.roundedRect(MARGIN,y,PW-2*MARGIN,18,2.5,2.5,'F');
+    doc.setFontSize(13);doc.setFont('helvetica','bold');doc.setTextColor(255,255,255);
+    doc.text('VÁLVULA RECHAZADA',PW/2,y+8,{align:'center'});
+    doc.setFontSize(9);doc.setFont('helvetica','normal');
+    doc.text('Fuera de servicio',PW/2,y+14,{align:'center'});
+    doc.setTextColor(0,0,0);
+  } else {
+    doc.setFillColor(10,90,40);
+    doc.roundedRect(MARGIN,y,PW-2*MARGIN,18,2.5,2.5,'F');
+    doc.setFontSize(13);doc.setFont('helvetica','bold');doc.setTextColor(255,255,255);
+    doc.text('VÁLVULA APTA',PW/2,y+8,{align:'center'});
+    doc.setFontSize(9);doc.setFont('helvetica','normal');
+    doc.text('Apta para continuar en servicio',PW/2,y+14,{align:'center'});
+    doc.setTextColor(0,0,0);
+  }
+  y+=24;
+
+  /* Listado de fotos incluidas */
+  y=sec('CONTENIDO DEL INFORME',y);
+  doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(40,40,40);
+  fotosPresentes.forEach((k,i)=>{
+    doc.text('· Pág. '+(i+2)+'  —  '+LABELS[k]+'  ('+SECCION[k]+')', MARGIN+3, y);
+    y+=5.5;
+  });
+  if(fotosPresentes.length<5){
+    doc.setTextColor(180,80,40);
+    const faltan=KEYS.filter(k=>!imgs[k]).map(k=>LABELS[k]).join(', ');
+    y+=2;
+    doc.setFontSize(8);doc.setFont('helvetica','italic');
+    doc.text('Foto(s) no incluida(s): '+faltan, MARGIN+3, y);
+    doc.setTextColor(0,0,0);
+  }
+
+  pie(1, TOTAL_PAGS);
+
+  /* ════════════ UNA PÁGINA POR FOTO ════════════
+     Área disponible para la imagen:
+       ancho  = PW - 2*MARGIN
+       alto   = desde y_inicial (debajo del título de sección)
+                hasta PH - 14 (pie de página)
+     Se calcula factor "best-fit" que respeta proporción real.        */
+  for(let i=0;i<fotosPresentes.length;i++){
+    const k=fotosPresentes[i];
+    const im=imgs[k];
+
+    doc.addPage();
+    cab();
+
+    /* Etiqueta de sección + título de la foto */
+    let yy=sec(SECCION[k],22);
+    doc.setFontSize(13);doc.setFont('helvetica','bold');doc.setTextColor(0,0,0);
+    doc.text(LABELS[k],MARGIN,yy+4);
+    yy+=10;
+
+    /* ÁREA DISPONIBLE para la imagen */
+    const areaX = MARGIN;
+    const areaY = yy;
+    const areaW = PW - 2*MARGIN;
+    const areaH = PH - yy - 14;   // 14 mm para el pie
+
+    /* BEST-FIT: escala manteniendo proporción exacta */
+    const scale = Math.min(areaW/im.w, areaH/im.h);
+    const drawW = im.w * scale;
+    const drawH = im.h * scale;
+
+    /* Centrar en el área */
+    const drawX = areaX + (areaW - drawW)/2;
+    const drawY = areaY + (areaH - drawH)/2;
+
+    /* Marco sutil detrás de la imagen */
+    doc.setDrawColor(220,220,225);
+    doc.setLineWidth(0.2);
+    doc.rect(drawX-0.5, drawY-0.5, drawW+1, drawH+1);
+
+    doc.addImage(im.d,'JPEG', drawX, drawY, drawW, drawH);
+
+    pie(i+2, TOTAL_PAGS);
+  }
+
+  /* ── Salida ── */
+  const blob=doc.output('blob');
+  const fname='CRPC_'+taller.replace(/\s+/g,'_')+'_'+fecha.replace(/\//g,'-')+'.pdf';
+  const txt_base='*CRPC Quiroga Juan Edgardo*\nTaller: '+taller+'\nFecha: '+fecha+' '+hora+'\n_NAG-444 (2026)_';
+
+  /* ───── SUBIR EL PDF A LA NUBE ─────
+     Esto es lo que permite enviar el PDF por WhatsApp sin adjuntarlo
+     a mano: subimos a Firebase Storage, obtenemos una URL pública,
+     y la incluimos en el texto del mensaje. WhatsApp auto-detecta
+     el link y muestra preview.                                        */
+  let pdfUrl = null;
+  let uploadError = null;
+
+  document.getElementById('ldg').innerHTML='<span class="sp"></span>Subiendo PDF a Firebase…';
+
+  try {
+    pdfUrl = await subirPDFaNube(blob, fname);
+    console.log('PDF subido:', pdfUrl);
+  } catch (e) {
+    uploadError = e.message || 'falló la subida';
+    console.error('Error subiendo PDF:', e);
+  }
+
+  /* Guardar en historial local SIEMPRE (con URL si hay) */
+  await guardarPDF(taller, fecha, hora, blob, fname, pdfUrl);
+
+  /* Resetear la pantalla de loading */
+  document.getElementById('ldg').innerHTML='<span class="sp"></span>Generando PDF…';
+  document.getElementById('ldg').classList.remove('on');
+  document.getElementById('sendbtn').disabled=false;
+
+  /* ── Construir mensaje de WhatsApp ── */
+  const txt = pdfUrl
+    ? txt_base + '\n\n📄 *PDF del informe:*\n' + pdfUrl
+    : txt_base;
+
+  /* ── Si NO se pudo subir, hacer fallback: descargar localmente ── */
+  if (!pdfUrl) {
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl; a.download = fname;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(blobUrl), 5000);
+  }
+
+  /* ── Abrir WhatsApp con el mensaje ── */
+  const waUrl = 'https://wa.me/' + WA + '?text=' + encodeURIComponent(txt);
+  const waLink = document.createElement('a');
+  waLink.href = waUrl;
+  waLink.target = '_blank';
+  waLink.rel = 'noopener';
+  document.body.appendChild(waLink);
+  waLink.click();
+  document.body.removeChild(waLink);
+
+  /* ── Feedback al usuario ── */
+  if (pdfUrl) {
+    showToast('✅ PDF enviado por WhatsApp con link');
+  } else if (uploadError) {
+    showToast('⚠️ ' + uploadError + ' — PDF descargado, adjuntalo a mano');
+  } else {
+    showToast('PDF descargado — adjuntalo en WhatsApp');
+  }
+
+  }catch(err){
+    console.error('Error al generar/enviar PDF:',err);
+    document.getElementById('ldg').innerHTML='<span class="sp"></span>Generando PDF…';
+    document.getElementById('ldg').classList.remove('on');
+    document.getElementById('sendbtn').disabled=false;
+    showToast('❌ Error: '+(err.message||'no se pudo generar el PDF'));
+  }
+}
+
+/* ───────── INDEXEDDB HISTORIAL ───────── */
+const DB='crpc_db', ST='pdfs';
+
+function abrirDB(){
+  return new Promise((res,rej)=>{
+    const r=indexedDB.open(DB,1);
+    r.onupgradeneeded=e=>e.target.result.createObjectStore(ST,{keyPath:'id',autoIncrement:true});
+    r.onsuccess=e=>res(e.target.result);
+    r.onerror=rej;
+  });
+}
+
+async function guardarPDF(taller,fecha,hora,blob,fname,url){
+  const ts=Date.now();
+  const registro={
+    taller, fecha, hora, fname, url:url||null, ts,
+    resultadoValvula, fotos:KEYS.filter(k=>fotos[k]).map(k=>LABELS[k]),
+    blob
+  };
+
+  const db=await abrirDB();
+  const tx=db.transaction(ST,'readwrite');
+  tx.objectStore(ST).add(registro);
+  await new Promise(r=>{tx.oncomplete=r;});
+  renderHist();
+}
+
+async function cargarPDFs(){
+  const db=await abrirDB();
+  return new Promise(res=>{
+    const r=db.transaction(ST).objectStore(ST).getAll();
+    r.onsuccess=e=>res([...e.target.result].reverse());
+  });
+}
+
+async function eliminarPDF(id){
+  const db=await abrirDB();
+  const tx=db.transaction(ST,'readwrite');
+  tx.objectStore(ST).delete(id);
+  await new Promise(r=>{tx.oncomplete=r;});
+  renderHist();
+}
+
+async function borrarTodo(){
+  if(!confirm('¿Borrar todo el historial?')) return;
+  const db=await abrirDB();
+  const tx=db.transaction(ST,'readwrite');
+  tx.objectStore(ST).clear();
+  await new Promise(r=>{tx.oncomplete=r;});
+  renderHist();
+}
+
+async function borrarHoy(){
+  if(!confirm('¿Limpiar solo los registros de hoy en este celular? Los PDF ya subidos quedan en Firebase.')) return;
+  const db=await abrirDB();
+  const items=await cargarPDFs();
+  const hoy=new Date().toLocaleDateString('es-AR');
+  const tx=db.transaction(ST,'readwrite');
+  const store=tx.objectStore(ST);
+  let borrados=0;
+  for(const it of items){
+    if(it.fecha===hoy){ store.delete(it.id); borrados++; }
+  }
+  await new Promise(r=>{tx.oncomplete=r;});
+  renderHist();
+  showToast(borrados ? 'Registros de hoy limpiados: '+borrados : 'No había registros de hoy');
+}
+
+async function renderHist(){
+  const items=await cargarPDFs();
+  const el=document.getElementById('histList');
+  if(!items.length){
+    el.innerHTML='<div class="hist-empty">Sin registros aún</div>';
+    return;
+  }
+  el.innerHTML=items.map(it=>`
+    <div class="hitem">
+      <div class="hitem-info">
+        <div class="hitem-taller">🏭 ${it.taller||'Sin nombre'}</div>
+        <div class="hitem-meta">${it.fecha} ${it.hora} &nbsp;·&nbsp; ${it.blob ? (it.blob.size/1024).toFixed(0)+' KB · ' : ''}<span class="${it.url?'link-ok':'link-no'}">${it.url?'LINK OK':'SIN LINK'}</span></div>
+      </div>
+      <div class="hitem-btns">
+        ${it.url ? `<button class="hbtn hbtn-link" title="Copiar link" onclick="copiarLink(${it.id})">🔗</button>` : ''}
+        <button class="hbtn" title="Compartir" onclick="compartirHist(${it.id})">📲</button>
+        ${it.blob ? `<button class="hbtn" title="Descargar" onclick="descargarHist(${it.id})">⬇️</button>` : ''}
+        <button class="hbtn hbtn-del" title="Eliminar" onclick="eliminarPDF(${it.id})">🗑️</button>
+      </div>
+    </div>`).join('');
+}
+
+async function obtenerItemLocal(id){
+  const db=await abrirDB();
+  return await new Promise(r=>{const q=db.transaction(ST).objectStore(ST).get(id);q.onsuccess=e=>r(e.target.result);});
+}
+
+async function copiarTexto(txt){
+  try{ await navigator.clipboard.writeText(txt); showToast('Link copiado'); }
+  catch(e){ prompt('Copiá el link:', txt); }
+}
+
+async function copiarLink(id){
+  const it=await obtenerItemLocal(id);
+  if(it && it.url) copiarTexto(it.url);
+  else showToast('Ese registro no tiene link');
+}
+
+async function copiarUltimoLink(){
+  const items=await cargarPDFs();
+  const it=items.find(x=>x.url);
+  if(it) copiarTexto(it.url);
+  else showToast('No hay links guardados');
+}
+
+async function compartirHist(id){
+  const db=await abrirDB();
+  const it=await obtenerItemLocal(id);
+  const base='*CRPC Quiroga Juan Edgardo*\nTaller: '+it.taller+'\nFecha: '+it.fecha+' '+it.hora+'\n_NAG-444 (2026)_';
+
+  /* Si ya tiene link generado → usar ese */
+  let url=it.url;
+
+  /* Si no tiene link local → intentar subir el PDF otra vez */
+  if(!url && firebaseReady){
+    try{
+      url=await subirPDFaNube(it.blob, it.fname);
+      /* Actualizar el registro con la URL */
+      const tx=db.transaction(ST,'readwrite');
+      tx.objectStore(ST).put({...it, url});
+      await new Promise(r=>{tx.oncomplete=r;});
+    }catch(e){
+      console.error('No se pudo subir:',e);
+    }
+  }
+
+  const txt = url ? base + '\n\n📄 *PDF del informe:*\n' + url : base;
+
+  /* Abrir WhatsApp con el link */
+  const waLink=document.createElement('a');
+  waLink.href='https://wa.me/'+WA+'?text='+encodeURIComponent(txt);
+  waLink.target='_blank';
+  waLink.rel='noopener';
+  document.body.appendChild(waLink);
+  waLink.click();
+  document.body.removeChild(waLink);
+
+  if(url) showToast('✅ Link enviado por WhatsApp');
+  else { descargarHist(id); showToast('⚠️ Sin link en la nube — PDF descargado'); }
+}
+
+async function descargarHist(id){
+  const db=await abrirDB();
+  const it=await obtenerItemLocal(id);
+  const url=URL.createObjectURL(it.blob);
+  const a=document.createElement('a');a.href=url;a.download=it.fname;a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),2000);
+}
+
+
+window.addEventListener('unhandledrejection', function(e){
+  console.error('Promesa rechazada:', e.reason);
+  document.getElementById('ldg').innerHTML='<span class="sp"></span>Generando PDF…';
+  document.getElementById('ldg').classList.remove('on');
+  document.getElementById('sendbtn').disabled=false;
+  showToast('Error: ' + ((e.reason && e.reason.message) || 'fallo inesperado'));
+});
+
+renderHist();
+
+</script>
+</body>
+</html>
