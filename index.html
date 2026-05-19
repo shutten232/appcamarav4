@@ -957,12 +957,12 @@ async function copiarUltimoLink(){
    ========================================================= */
 function buildWhatsAppText(taller,fecha,hora,url,resultado){
   const estado = resultado === "rech" ? "VÁLVULA RECHAZADA" : "VÁLVULA APTA";
-  return "*CRPC Quiroga Juan Edgardo*\\n" +
-    "Taller: " + taller + "\\n" +
-    "Fecha: " + fecha + " " + hora + "\\n" +
-    "Resultado: " + estado + "\\n" +
-    "_NAG-444 (2026)_\\n\\n" +
-    "📄 *PDF del informe:*\\n" + (url || "Sin link");
+  return "*CRPC Quiroga Juan Edgardo*\n" +
+    "Taller: " + taller + "\n" +
+    "Fecha: " + fecha + " " + hora + "\n" +
+    "Resultado: " + estado + "\n" +
+    "_NAG-444 (2026)_\n\n" +
+    "PDF del informe:\n" + (url || "Sin link");
 }
 async function enviar(){
   const btn = document.getElementById("sendBtn");
