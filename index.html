@@ -2,435 +2,428 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="CRPC">
-<meta name="theme-color" content="#050505">
-<link id="manifest-link" rel="manifest">
-<link id="apple-icon" rel="apple-touch-icon">
-<title>CRPC Quiroga · Escaneo</title>
-
+<meta name="theme-color" content="#000000">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>CRPC QUIROGA GNC</title>
 <style>
-:root{
-  --bg:#050505;
-  --panel:#121214;
-  --panel2:#1c1c1f;
-  --line:#2b2b30;
-  --muted:#888;
-  --soft:#555;
-  --txt:#fff;
-  --green:#25d366;
-  --red:#ff453a;
-  --blue:#0a84ff;
-  --yellow:#ffd60a;
-}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
-body{max-width:460px;margin:0 auto;padding-bottom:98px;min-height:100vh}
-button,input{font-family:inherit}
-button{cursor:pointer}
-.hide{display:none!important}
+:root{
+  --bg:#000;
+  --panel:#111113;
+  --panel2:#17171a;
+  --line:#2a2a30;
+  --line2:#34343a;
+  --text:#fff;
+  --muted:#8d8d95;
+  --green:#25d366;
+  --green-dark:#102014;
+  --red:#ff453a;
+  --orange:#ff9f0a;
+  --radius:16px;
+}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  max-width:480px;
+  margin:0 auto;
+  padding-bottom:78px;
+}
+header{
+  position:sticky;
+  top:0;
+  z-index:30;
+  background:#080809;
+  border-bottom:1px solid var(--line);
+  padding:12px 12px 10px;
+}
+h1{font-size:17px;letter-spacing:-.3px}
+.sub{font-size:11px;color:#777;margin-top:3px}
+.status{
+  margin-top:10px;
+  background:#141416;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:9px 10px;
+  font-size:12px;
+  color:#c8c8cd;
+  min-height:36px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.dot{width:8px;height:8px;border-radius:50%;background:#555;flex:none}
+.dot.ok{background:var(--green)} .dot.warn{background:var(--orange)} .dot.err{background:var(--red)}
+.spin{display:none;width:17px;height:17px;border:2px solid #333;border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite;margin-left:auto}
+.spin.on{display:block}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-/* HEADER */
-.header{
-  position:sticky;top:0;z-index:40;
-  background:linear-gradient(180deg,#080808 0%,rgba(8,8,8,.94) 80%,rgba(8,8,8,.75));
-  padding:14px 12px 10px;
-  border-bottom:1px solid #151515;
-  backdrop-filter:blur(12px);
-}
-.toprow{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.brand{display:flex;align-items:center;gap:10px}
-.logo{
-  width:38px;height:38px;border-radius:12px;
-  background:linear-gradient(135deg,#202024,#0d0d0f);
-  border:1px solid #2c2c32;
-  display:flex;align-items:center;justify-content:center;
-  color:var(--green);font-weight:900;letter-spacing:-1px;
-}
-.brand h1{font-size:17px;line-height:1.05;letter-spacing:-.35px}
-.brand p{font-size:11px;color:#666;margin-top:2px}
-.statusMini{
-  background:#101012;border:1px solid #222;border-radius:999px;
-  padding:7px 10px;font-size:11px;color:#aaa;white-space:nowrap;
-}
-.statusMini.ok{color:var(--green);border-color:#174f2c;background:#07160d}
-.statusMini.bad{color:var(--red);border-color:#581b18;background:#1a0908}
+.page{display:none;padding-bottom:6px}
+.page.on{display:block}
 
-/* TABS */
-.tabs{
-  display:grid;grid-template-columns:1fr 1fr;gap:7px;
-  margin-top:12px;background:#0d0d0f;padding:5px;border-radius:15px;border:1px solid #1d1d21;
-}
-.tab{
-  border:none;border-radius:11px;padding:10px 8px;
-  background:transparent;color:#777;font-size:13px;font-weight:800;
-}
-.tab.active{background:#25252a;color:#fff;box-shadow:0 6px 18px rgba(0,0,0,.25)}
-
-/* COMMON */
-.page{padding:12px 10px}
 .card{
-  background:var(--panel);border:1px solid #24242a;border-radius:16px;
-  padding:12px;margin-bottom:10px;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  margin:10px;
+  padding:12px;
 }
-.label{font-size:10px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;color:#666;margin:14px 2px 7px}
-.small{font-size:12px;color:#777;line-height:1.35}
-.row{display:flex;align-items:center;gap:8px}
-.grow{flex:1}
+.label{
+  font-size:10px;
+  color:#7b7b84;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  font-weight:900;
+  margin-bottom:7px
+}
+.input{
+  width:100%;
+  background:#1c1c20;
+  border:1px solid var(--line2);
+  color:#fff;
+  border-radius:14px;
+  padding:14px 13px;
+  font-size:16px;
+  outline:none;
+}
+.input::placeholder{color:#575760}
+.searchBox{position:relative}
+.suggest{
+  display:none;
+  position:absolute;
+  left:0;right:0;top:56px;
+  background:#171719;
+  border:1px solid var(--line2);
+  border-radius:14px;
+  max-height:240px;
+  overflow:auto;
+  z-index:80;
+  box-shadow:0 14px 32px rgba(0,0,0,.65)
+}
+.suggest.show{display:block}
+.sug{padding:13px 12px;border-bottom:1px solid var(--line);font-size:14px}
+.sug:last-child{border-bottom:0}
 
-/* INSTALL */
-.install{
-  display:none;align-items:center;gap:10px;
-  background:#102012;border:1px solid #1d5f32;
-  border-radius:14px;padding:10px 12px;margin-bottom:10px;
+.quick{
+  display:flex;
+  gap:7px;
+  overflow:auto;
+  padding:2px 1px 4px;
+  margin-top:9px;
 }
-.install.show{display:flex}
-.install p{font-size:12px;color:#b7eac7;line-height:1.35;flex:1}
-.install button{
-  background:var(--green);color:#06120a;border:none;border-radius:10px;
-  font-weight:900;font-size:12px;padding:8px 11px;
-}
-
-/* FORM */
-.field{
-  display:flex;align-items:center;gap:9px;
-  background:#17171a;border:1px solid #29292f;border-radius:14px;
-  padding:11px 12px;
-}
-.field span{font-size:12px;color:#777;font-weight:800}
-.field input{
-  flex:1;background:transparent;border:none;outline:none;color:#fff;
-  font-size:16px;font-weight:700;min-width:0;
-}
-.field input::placeholder{color:#3f3f44}
-.quickBtns{display:flex;gap:7px;margin-top:9px;overflow-x:auto;padding-bottom:1px}
 .qbtn{
-  flex:0 0 auto;background:#202024;border:1px solid #313139;color:#ccc;
-  border-radius:999px;padding:7px 10px;font-size:12px;font-weight:700;
+  background:#202024;
+  border:1px solid var(--line2);
+  color:#ededf0;
+  border-radius:999px;
+  padding:9px 12px;
+  font-size:12px;
+  font-weight:900;
+  white-space:nowrap;
 }
 
-/* PHOTO GRID */
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.slot{
-  min-height:128px;border-radius:15px;background:#111114;
-  border:1.5px dashed #303036;position:relative;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;text-align:center;
+.guide{
+  margin:10px;
+  background:var(--green-dark);
+  border:1px solid #244a31;
+  border-radius:16px;
+  padding:12px;
+  color:#dfffe8;
 }
-.slot.solo{grid-column:1/3;width:52%;justify-self:center}
+.guideTitle{font-size:13px;font-weight:950;margin-bottom:8px;color:var(--green)}
+.guideSteps{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
+.gstep{
+  background:rgba(37,211,102,.08);
+  border:1px solid rgba(37,211,102,.18);
+  border-radius:12px;
+  padding:8px 6px;
+  text-align:center;
+  font-size:11px;
+  font-weight:850;
+  line-height:1.2
+}
+.gstep b{display:block;font-size:15px;margin-bottom:2px;color:#fff}
+.hint{
+  margin:0 10px 8px;
+  background:#141417;
+  border:1px solid #2b2b31;
+  border-radius:14px;
+  padding:11px 12px;
+  font-size:12px;
+  color:#a8a8b0;
+  line-height:1.38
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin:10px;
+}
+.slot{
+  min-height:116px;
+  border:1.5px dashed #34343a;
+  background:#101012;
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:7px;
+  position:relative;
+  overflow:hidden;
+}
+.slot.big{grid-column:1/3;min-height:126px}
+.ico{font-size:30px}
+.lbl{font-size:11px;color:#666;text-align:center;line-height:1.25;padding:0 8px}
 .slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:none}
-.slot.ok{border-color:var(--green);border-style:solid}
+.slot.ok{border-style:solid;border-color:var(--green)}
 .slot.ok img{display:block}
-.slot.ok .empty{display:none}
-.empty{padding:10px}
-.ico{font-size:25px;margin-bottom:5px}
-.txt{font-size:11px;color:#555;font-weight:800;line-height:1.25}
+.slot.ok .ico,.slot.ok .lbl{display:none}
 .tick{
-  display:none;position:absolute;top:7px;right:7px;width:24px;height:24px;
-  background:var(--green);color:#06220f;border-radius:50%;
-  align-items:center;justify-content:center;font-weight:1000;font-size:14px;
-  box-shadow:0 3px 10px rgba(0,0,0,.35);
+  display:none;
+  position:absolute;top:8px;right:8px;
+  background:var(--green);
+  color:#07140a;
+  width:23px;height:23px;border-radius:50%;
+  align-items:center;justify-content:center;
+  font-weight:950;font-size:13px;z-index:2
 }
 .slot.ok .tick{display:flex}
+.rot{
+  display:none;
+  position:absolute;left:8px;top:8px;
+  background:rgba(0,0,0,.74);
+  border:1px solid rgba(255,255,255,.18);
+  color:#fff;border-radius:11px;
+  padding:7px 10px;font-size:16px;font-weight:950;z-index:3
+}
+.slot.ok .rot{display:block}
 .badge{
-  display:none;position:absolute;bottom:0;left:0;right:0;
-  background:linear-gradient(transparent,rgba(0,0,0,.86));
-  padding:18px 6px 7px;font-size:10px;font-weight:800;color:#ddd;
+  display:none;position:absolute;left:0;right:0;bottom:0;
+  background:linear-gradient(transparent,rgba(0,0,0,.87));
+  padding:20px 8px 8px;text-align:center;font-size:10px;color:#ddd
 }
 .slot.ok .badge{display:block}
-.xphoto{
-  display:none;position:absolute;top:7px;left:7px;width:24px;height:24px;
-  border:none;border-radius:50%;background:rgba(0,0,0,.65);color:#fff;font-weight:900;
-}
-.slot.ok .xphoto{display:block}
 
-/* RESULT */
-.resultGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.resultBtn{
-  border:1.5px solid #2a2a2f;border-radius:13px;padding:11px 8px;
-  background:#17171a;color:#777;font-size:13px;font-weight:900;text-align:center;
+.result{display:flex;gap:9px;margin:0 10px 10px}
+.rbtn{
+  flex:1;border:1px solid #303035;background:#161618;color:#777;
+  border-radius:14px;padding:13px 8px;font-size:13px;font-weight:950
 }
-.resultBtn.ok.active{background:#082012;border-color:var(--green);color:var(--green)}
-.resultBtn.rech.active{background:#250908;border-color:var(--red);color:var(--red)}
-.counter{
-  display:flex;justify-content:space-between;align-items:center;
-  color:#777;font-size:12px;margin-top:9px;
-}
-.progress{height:7px;background:#1c1c20;border-radius:99px;overflow:hidden;margin-top:8px}
-.progress span{display:block;height:100%;width:0;background:var(--green);border-radius:99px;transition:.2s}
+.rbtn.on.ok{background:#0e2a17;color:var(--green);border-color:var(--green)}
+.rbtn.on.bad{background:#321010;color:var(--red);border-color:var(--red)}
 
-/* SEND BAR */
-.bottom{
-  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-  width:100%;max-width:460px;padding:10px 10px calc(16px + env(safe-area-inset-bottom));
-  background:linear-gradient(transparent,#050505 23%,#050505);
-  z-index:50;
-}
-.sendBtn{
-  width:100%;border:none;border-radius:17px;padding:15px 14px;
-  background:var(--green);color:#06120a;font-size:16px;font-weight:1000;
+.actionBar{display:none}.actionBar.on{display:none}.scanSave{margin-bottom:12px}
+.mainbtn{
+  width:100%;border:0;border-radius:16px;padding:16px 14px;
+  font-size:16px;font-weight:950;color:#061108;background:var(--green);
   display:flex;align-items:center;justify-content:center;gap:8px;
+  min-height:54px;
 }
-.sendBtn:disabled{background:#202024;color:#555}
-.secondaryLine{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:7px}
-.smallBtn{
-  border:none;border-radius:13px;background:#1b1b1f;color:#aaa;
-  padding:10px 8px;font-weight:800;font-size:12px;
+.mainbtn:disabled{background:#1b1b1e;color:#555}
+.row{display:flex;gap:8px;margin-top:8px}
+.secbtn{
+  flex:1;border:1px solid #303035;background:#171719;color:#ddd;
+  border-radius:14px;padding:13px 8px;font-size:13px;font-weight:850;
+  min-height:48px
 }
+.danger{color:var(--red)!important}
+.count{background:rgba(0,0,0,.22);border-radius:999px;padding:2px 9px;font-size:12px}
 
-/* STATUS */
-.workBox{
-  display:none;background:#0d1824;border:1px solid #1b4e7d;border-radius:15px;
-  padding:11px 12px;margin-bottom:10px;color:#cae4ff;
+.bottomNav{
+  position:fixed;left:50%;bottom:0;transform:translateX(-50%);
+  width:100%;max-width:480px;
+  background:#080809;border-top:1px solid var(--line);
+  display:grid;grid-template-columns:1fr 1fr 1fr;z-index:60;
+  padding:7px 6px calc(8px + env(safe-area-inset-bottom))
 }
-.workBox.show{display:block}
-.workTitle{font-size:13px;font-weight:900;margin-bottom:5px}
-.workMsg{font-size:12px;color:#9fc5e8}
-.spin{
-  display:inline-block;width:15px;height:15px;border:2px solid #31577e;
-  border-top-color:#d6ecff;border-radius:50%;animation:spin .7s linear infinite;
-  margin-right:7px;vertical-align:-2px;
+.navBtn{
+  border:0;background:transparent;color:#777;border-radius:14px;
+  padding:7px 4px;font-size:11px;font-weight:900;
+  display:flex;flex-direction:column;gap:4px;align-items:center;min-height:54px
 }
-@keyframes spin{to{transform:rotate(360deg)}}
+.navBtn b{font-size:20px;line-height:1}
+.navBtn.on{background:#141416;color:var(--green)}
+.navCount{font-size:10px;background:#242428;color:#ddd;border-radius:999px;padding:1px 7px}
+
+.topPanel{margin:10px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.metric{
+  background:var(--panel);border:1px solid var(--line);border-radius:16px;
+  padding:14px;text-align:center
+}
+.metric b{font-size:30px;display:block;color:var(--green)}
+.metric span{font-size:11px;color:#777;text-transform:uppercase;font-weight:950}
+
+.item,.hist{
+  background:var(--panel);
+  border:1px solid #25252a;
+  border-radius:16px;
+  margin:8px 10px;
+  padding:12px;
+}
+.itemTop{display:flex;gap:10px;align-items:center}
+.itemInfo{flex:1;min-width:0}
+.itemTitle,.histTitle{
+  font-size:14px;font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.itemMeta,.histMeta{font-size:11px;color:#777;margin-top:4px;line-height:1.35}
+.itemBtns{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.ibtn{
+  flex:1;border:1px solid #303035;background:#1b1b1e;color:#ddd;
+  border-radius:11px;padding:10px 6px;font-size:12px;font-weight:850;min-width:88px
+}
+.empty{
+  text-align:center;color:#555;font-size:14px;padding:30px 14px;line-height:1.4
+}
+.finish{
+  margin:10px;background:#102014;border:1px solid #254b31;border-radius:16px;padding:12px
+}
+.finish b{display:block;color:var(--green);margin-bottom:4px}
+.finish span{font-size:12px;color:#cfeedd;line-height:1.35}
+
 .toast{
-  position:fixed;left:50%;bottom:96px;transform:translateX(-50%);
-  max-width:92%;background:#1b1b1f;color:#fff;border:1px solid #333;
-  border-radius:999px;padding:10px 15px;font-size:13px;z-index:100;
-  opacity:0;pointer-events:none;transition:.25s;text-align:center;
+  position:fixed;left:50%;bottom:82px;transform:translateX(-50%);
+  background:#202024;border:1px solid #333338;color:#fff;border-radius:999px;
+  padding:10px 15px;font-size:13px;opacity:0;pointer-events:none;transition:.25s;
+  z-index:99;max-width:92%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
 }
 .toast.show{opacity:1}
-
-/* HISTORY */
-.histHeader{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;margin-bottom:10px}
-.search{
-  background:#17171a;border:1px solid #2a2a30;border-radius:14px;
-  color:#fff;font-size:14px;padding:12px;outline:none;width:100%;
-}
-.filterRow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:10px}
-.fbtn{
-  border:1px solid #29292f;background:#151518;color:#777;border-radius:12px;
-  padding:9px 6px;font-size:12px;font-weight:900;
-}
-.fbtn.active{background:#24242a;color:#fff;border-color:#3c3c44}
-.statsGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
-.stat{
-  background:#121214;border:1px solid #24242a;border-radius:15px;padding:12px;
-}
-.stat b{font-size:21px;letter-spacing:-.7px}
-.stat span{display:block;font-size:11px;color:#777;margin-top:2px;font-weight:800}
-.histList{display:flex;flex-direction:column;gap:8px}
-.emptyHist{
-  text-align:center;color:#555;border:1px dashed #29292f;border-radius:16px;
-  padding:28px 12px;font-size:13px;line-height:1.4;
-}
-.hitem{
-  background:#121214;border:1px solid #24242a;border-radius:16px;padding:12px;
-}
-.hTop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
-.hTitle{font-size:15px;font-weight:1000;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hDate{font-size:11px;color:#777;margin-top:3px}
-.hBadge{
-  flex:0 0 auto;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:1000;
-}
-.hBadge.ok{background:#092112;color:var(--green);border:1px solid #164b29}
-.hBadge.rech{background:#270908;color:var(--red);border:1px solid #5b1916}
-.hLink{
-  margin-top:10px;background:#0c0c0e;border:1px solid #24242a;border-radius:11px;
-  padding:9px;font-size:11px;color:#8fbfff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.hActions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-top:10px}
-.hActions button{
-  border:none;border-radius:11px;background:#202024;color:#ddd;
-  padding:10px 6px;font-size:12px;font-weight:900;
-}
-.hActions button.del{background:#2b1010;color:#ffb5b0}
-.dangerBtn{
-  background:#2b1010;color:#ffb5b0;border:1px solid #4a1917;
-  border-radius:13px;padding:11px 12px;font-size:13px;font-weight:900;
-}
-.cleanRow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
-
-/* DEBUG */
-details.debug{
-  margin:10px 0;background:#111114;border:1px solid #24242a;border-radius:14px;padding:11px;
-}
-details.debug summary{font-size:12px;color:#777;font-weight:900}
-.debug pre{white-space:pre-wrap;color:#aaa;font-size:11px;line-height:1.35;margin-top:8px}
-
-/* FILE INPUT */
 input[type=file]{display:none}
+
+.pageTitle{
+  margin:10px 10px 0;
+  font-size:13px;
+  color:#8c8c95;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.8px;
+}
+
+@media (max-width:380px){
+  .guideSteps{grid-template-columns:1fr}
+  .grid{gap:8px}
+  .slot{min-height:124px}
+  .slot.big{min-height:138px}
+  .mainbtn{font-size:15px}
+}
 </style>
 </head>
-
 <body>
-<header class="header">
-  <div class="toprow">
-    <div class="brand">
-      <div class="logo">CQ</div>
-      <div>
-        <h1>CRPC Quiroga</h1>
-        <p>Escaneo · PDF · WhatsApp</p>
-      </div>
-    </div>
-    <div id="firebaseStatus" class="statusMini">Firebase...</div>
-  </div>
-
-  <nav class="tabs">
-    <button id="tabScan" class="tab active" onclick="setTab('scan')">Nuevo escaneo</button>
-    <button id="tabHist" class="tab" onclick="setTab('hist')">Historial</button>
-  </nav>
+<header>
+  <h1>CRPC QUIROGA GNC</h1>
+  <div class="sub">USO INTERNO · Interfaz móvil</div>
+  <div class="status"><span id="sdot" class="dot"></span><span id="smsg">Listo. Sacá fotos y guardá el PDF.</span><span id="spin" class="spin"></span></div>
 </header>
 
-<main>
-  <!-- NUEVO ESCANEO -->
-  <section id="pageScan" class="page">
-    <div class="install" id="installBox">
-      <p>Instalá esta app en el celular para usarla como acceso directo.</p>
-      <button onclick="installApp()">Instalar</button>
+<section id="pageScan" class="page on">
+  <div class="guide">
+    <div class="guideTitle">Trabajo rápido</div>
+    <div class="guideSteps">
+      <div class="gstep"><b>1</b>Taller</div>
+      <div class="gstep"><b>2</b>Fotos</div>
+      <div class="gstep"><b>3</b>Guardar PDF</div>
     </div>
-
-    <div class="workBox" id="workBox">
-      <div class="workTitle"><span class="spin"></span>Procesando</div>
-      <div class="workMsg" id="workMsg">Preparando...</div>
-    </div>
-
-    <div class="card">
-      <div class="field">
-        <span>Taller</span>
-        <input id="taller" type="text" placeholder="Nombre del taller" autocomplete="off" autocapitalize="words">
-      </div>
-      <div class="quickBtns">
-        <button class="qbtn" onclick="setTallerQuick('Misiti')">Misiti</button>
-        <button class="qbtn" onclick="setTallerQuick('Leal')">Leal</button>
-        <button class="qbtn" onclick="setTallerQuick('Gutiérrez')">Gutiérrez</button>
-        <button class="qbtn" onclick="setTallerQuick('Alemanes')">Alemanes</button>
-      </div>
-    </div>
-
-    <div class="label">Cilindro</div>
-    <div class="grid">
-      <div class="slot" id="btn_s" onclick="sacar('s')">
-        <img id="img_s" alt="">
-        <button class="xphoto" onclick="event.stopPropagation(); borrarFoto('s')">×</button>
-        <div class="empty"><div class="ico">🔢</div><div class="txt">N° serie y marcado</div></div>
-        <div class="tick">✓</div><div class="badge">N° serie — tocar para repetir</div>
-      </div>
-
-      <div class="slot" id="btn_v" onclick="sacar('v')">
-        <img id="img_v" alt="">
-        <button class="xphoto" onclick="event.stopPropagation(); borrarFoto('v')">×</button>
-        <div class="empty"><div class="ico">📦</div><div class="txt">Volumen / capacidad</div></div>
-        <div class="tick">✓</div><div class="badge">Volumen — tocar para repetir</div>
-      </div>
-
-      <div class="slot solo" id="btn_g" onclick="sacar('g')">
-        <img id="img_g" alt="">
-        <button class="xphoto" onclick="event.stopPropagation(); borrarFoto('g')">×</button>
-        <div class="empty"><div class="ico">🔩</div><div class="txt">Vista general</div></div>
-        <div class="tick">✓</div><div class="badge">Vista general — tocar para repetir</div>
-      </div>
-    </div>
-
-    <div class="label">Válvula</div>
-    <div class="grid">
-      <div class="slot" id="btn_vm" onclick="sacar('vm')">
-        <img id="img_vm" alt="">
-        <button class="xphoto" onclick="event.stopPropagation(); borrarFoto('vm')">×</button>
-        <div class="empty"><div class="ico">🔧</div><div class="txt">Válvula montada</div></div>
-        <div class="tick">✓</div><div class="badge">Válvula montada — tocar para repetir</div>
-      </div>
-
-      <div class="slot" id="btn_vd" onclick="sacar('vd')">
-        <img id="img_vd" alt="">
-        <button class="xphoto" onclick="event.stopPropagation(); borrarFoto('vd')">×</button>
-        <div class="empty"><div class="ico">🏷️</div><div class="txt">Marcado válvula</div></div>
-        <div class="tick">✓</div><div class="badge">Marcado válvula — tocar para repetir</div>
-      </div>
-    </div>
-
-    <div class="card" style="margin-top:12px">
-      <div class="label" style="margin-top:0">Resultado válvula</div>
-      <div class="resultGrid">
-        <button id="resOk" class="resultBtn ok active" onclick="setValvula('ok')">✅ Válvula apta</button>
-        <button id="resRech" class="resultBtn rech" onclick="setValvula('rech')">⛔ Rechazada</button>
-      </div>
-
-      <div class="counter">
-        <span>Fotos cargadas</span>
-        <b id="countTxt">0 / 5</b>
-      </div>
-      <div class="progress"><span id="progressBar"></span></div>
-      <p class="small" style="margin-top:9px">Mínimo recomendado: 4 fotos. Ideal: 5 fotos.</p>
-    </div>
-
-    <details class="debug">
-      <summary>Estado técnico</summary>
-      <pre id="debugInfo">Cargando...</pre>
-    </details>
-  </section>
-
-  <!-- HISTORIAL -->
-  <section id="pageHist" class="page hide">
-    <div class="histHeader">
-      <input id="histSearch" class="search" placeholder="Buscar taller..." oninput="renderHist()">
-      <button class="smallBtn" onclick="renderHist()">Actualizar</button>
-    </div>
-
-    <div class="filterRow">
-      <button id="fHoy" class="fbtn active" onclick="setFilter('hoy')">Hoy</button>
-      <button id="fSemana" class="fbtn" onclick="setFilter('semana')">Semana</button>
-      <button id="fTodos" class="fbtn" onclick="setFilter('todos')">Todos</button>
-    </div>
-
-    <div class="statsGrid">
-      <div class="stat"><b id="statCount">0</b><span>registros mostrados</span></div>
-      <div class="stat"><b id="statToday">0</b><span>generados hoy</span></div>
-    </div>
-
-    <div class="card">
-      <div class="small">
-        El historial queda guardado solo en este celular. Borrar el historial local no borra los PDF ya subidos a Firebase.
-      </div>
-      <div class="cleanRow">
-        <button class="dangerBtn" onclick="limpiarDia()">Limpiar día</button>
-        <button class="dangerBtn" onclick="limpiarTodo()">Borrar todo</button>
-      </div>
-    </div>
-
-    <div id="histList" class="histList">
-      <div class="emptyHist">Sin registros todavía.</div>
-    </div>
-  </section>
-</main>
-
-<div class="bottom" id="bottomScan">
-  <button id="sendBtn" class="sendBtn" onclick="enviar()" disabled>
-    📲 Generar PDF y enviar
-  </button>
-  <div class="secondaryLine">
-    <button class="smallBtn" onclick="limpiarFormulario(false)">Limpiar fotos</button>
-    <button class="smallBtn" onclick="copiarUltimoLink()">Copiar último link</button>
   </div>
-</div>
 
-<div class="toast" id="toast"></div>
+  <div class="card">
+    <div class="label">Taller</div>
+    <div class="searchBox">
+      <input class="input" id="taller" placeholder="Buscar o escribir taller" autocomplete="off" oninput="buscarTaller()" onfocus="buscarTaller()">
+      <div class="suggest" id="suggest"></div>
+    </div>
+    <div class="quick" id="quick"></div>
+  </div>
 
-<input type="file" accept="image/*" capture="environment" id="fi_s" onchange="cargar(this,'s')">
-<input type="file" accept="image/*" capture="environment" id="fi_v" onchange="cargar(this,'v')">
-<input type="file" accept="image/*" capture="environment" id="fi_g" onchange="cargar(this,'g')">
+  <div class="hint">Sacá mínimo 4 fotos. Si una sale de costado, tocá ↻. Luego guardá el PDF en la pestaña Archivos.</div>
+
+  <div class="grid">
+    <div class="slot" id="btn_s" onclick="sacar('s')">
+      <button class="rot" onclick="rotar(event,'s')">↻</button><img id="img_s"><div class="tick">✓</div><span class="ico">🔢</span><span class="lbl">N° serie / marcado</span><div class="badge">N° serie</div>
+    </div>
+    <div class="slot" id="btn_v" onclick="sacar('v')">
+      <button class="rot" onclick="rotar(event,'v')">↻</button><img id="img_v"><div class="tick">✓</div><span class="ico">📦</span><span class="lbl">Volumen / capacidad</span><div class="badge">Volumen</div>
+    </div>
+    <div class="slot big" id="btn_g" onclick="sacar('g')">
+      <button class="rot" onclick="rotar(event,'g')">↻</button><img id="img_g"><div class="tick">✓</div><span class="ico">🔩</span><span class="lbl">Vista general del cilindro</span><div class="badge">Vista general</div>
+    </div>
+    <div class="slot" id="btn_vm" onclick="sacar('vm')">
+      <button class="rot" onclick="rotar(event,'vm')">↻</button><img id="img_vm"><div class="tick">✓</div><span class="ico">🔧</span><span class="lbl">Válvula montada</span><div class="badge">Válvula montada</div>
+    </div>
+    <div class="slot" id="btn_vd" onclick="sacar('vd')">
+      <button class="rot" onclick="rotar(event,'vd')">↻</button><img id="img_vd"><div class="tick">✓</div><span class="ico">🏷️</span><span class="lbl">Marcado válvula</span><div class="badge">Marcado válvula</div>
+    </div>
+  </div>
+
+  <div class="result">
+    <button id="rok" class="rbtn on ok" onclick="setResultado('APTA')">✅ Apta</button>
+    <button id="rbad" class="rbtn" onclick="setResultado('RECHAZADA')">⛔ Rechazada</button>
+  </div>
+
+  <div class="card scanSave">
+    <button class="mainbtn" id="saveBtn" onclick="guardarPDF()" disabled>💾 Guardar PDF <span class="count" id="photoCount">0/5</span></button>
+    <div class="row">
+      <button class="secbtn" onclick="go('files')">Ver archivos <span id="miniFileCount">0</span></button>
+      <button class="secbtn danger" onclick="limpiarActual()">Limpiar</button>
+    </div>
+  </div>
+</section>
+
+<section id="pageFiles" class="page">
+  <div class="pageTitle">Archivos del lote</div>
+  <div class="topPanel">
+    <div class="metric"><b id="fileNum">0</b><span>PDF guardados</span></div>
+    <div class="metric"><b id="fileKb">0</b><span>KB aprox.</span></div>
+  </div>
+  <div class="finish">
+    <b>Archivos generados</b>
+    <span>Acá ves todos los PDF guardados. Revisá la lista y después tocá cerrar lote.</span>
+  </div>
+  <div class="card">
+    <button class="mainbtn" onclick="enviarZip()" id="zipBtn" disabled>📦 Cerrar lote y enviar ZIP</button>
+  </div>
+  <div id="fileList"><div class="empty">No hay PDF guardados. Andá a Escanear y tocá “Guardar PDF”.</div></div>
+</section>
+
+<section id="pageZips" class="page">
+  <div class="pageTitle">Historial de ZIP</div>
+  <div class="topPanel">
+    <div class="metric"><b id="zipNum">0</b><span>ZIP enviados</span></div>
+    <div class="metric"><b id="zipToday">0</b><span>hoy</span></div>
+  </div>
+  <div class="row" style="margin:10px">
+    <button class="secbtn danger" onclick="limpiarHistHoy()">Limpiar día</button>
+    <button class="secbtn danger" onclick="limpiarHistTodo()">Borrar todo</button>
+  </div>
+  <div id="zipList"><div class="empty">Todavía no enviaste ningún ZIP.</div></div>
+</section>
+
+<input type="file" accept="image/*" capture="environment" id="fi_s"  onchange="cargar(this,'s')">
+<input type="file" accept="image/*" capture="environment" id="fi_v"  onchange="cargar(this,'v')">
+<input type="file" accept="image/*" capture="environment" id="fi_g"  onchange="cargar(this,'g')">
 <input type="file" accept="image/*" capture="environment" id="fi_vm" onchange="cargar(this,'vm')">
 <input type="file" accept="image/*" capture="environment" id="fi_vd" onchange="cargar(this,'vd')">
 
+
+
+<nav class="bottomNav">
+  <button class="navBtn on" id="navScan" onclick="go('scan')"><b>📷</b>Escanear</button>
+  <button class="navBtn" id="navFiles" onclick="go('files')"><b>📄</b>Archivos <span class="navCount" id="navFileCount">0</span></button>
+  <button class="navBtn" id="navZips" onclick="go('zips')"><b>📦</b>ZIP <span class="navCount" id="navZipCount">0</span></button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-storage-compat.js"></script>
 
 <script>
-/* =========================================================
-   CONFIGURACIÓN
-   ========================================================= */
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyALJ4g1G6LybzkLk2ZI97tJ9E8AdW2pzAE",
   authDomain: "fotoscrpc.firebaseapp.com",
@@ -439,605 +432,317 @@ const FIREBASE_CONFIG = {
   messagingSenderId: "176606790230",
   appId: "1:176606790230:web:fbe1be2d1f947ea69cf1f7"
 };
+let firebaseReady=false;
+try{ firebase.initializeApp(FIREBASE_CONFIG); firebaseReady=true; }catch(e){ console.error(e); }
 
-const WA = "543515144679";
-const KEYS = ["s","v","g","vm","vd"];
-const LABELS = {
-  s:"N° de serie y marcado",
-  v:"Volumen / capacidad",
-  g:"Vista general del cilindro",
-  vm:"Válvula montada",
-  vd:"Marcado de válvula"
-};
-const SECTION = {s:"CILINDRO",v:"CILINDRO",g:"CILINDRO",vm:"VÁLVULA",vd:"VÁLVULA"};
+const WA='543515144679';
+const KEYS=['s','v','g','vm','vd'];
+const LABELS={s:'N° serie / marcado',v:'Volumen / capacidad',g:'Vista general',vm:'Válvula montada',vd:'Marcado válvula'};
+const TALLERES=[
+'Minuto GNC','Calera Silvana','Calera Torres','Zico','Colón GNC','Tabach GNC','Franco Alta Gracia','Servincor','Castagno','Kademian','Ugolino','Bruno F','Porto Alta Gracia','Brochero GNC','Valparaíso GNC','Cánovas','Malvinas GNC','Génesis GNC','ALEM','Cars','Forteza GNC','Enero Gas','Pepe','Sola','Genovesio','GNC Giordano','Tecno GNC','Marcos GNC','Franco CBA','Franc Villa Dolores','Leal','Misiti','Enjom','Alemanes','Rosso','CERIANI','Biondini','Maidana'
+];
+const FAVORITOS=['Zico','ALEM','Leal','Misiti','Alemanes','Servincor','Calera Silvana','Calera Torres'];
 
-const MAX_IMG = 2600;       // alta calidad
-const JPG_QUALITY = 0.93;   // alta calidad
-const UPLOAD_TIMEOUT = 30000;
+let fotos={}, rot={}, resultado='APTA', archivos=[], busy=false;
+const $=id=>document.getElementById(id);
 
-/* =========================================================
-   ESTADO
-   ========================================================= */
-let firebaseReady = false;
-let currentTab = "scan";
-let filter = "hoy";
-let resultadoValvula = "ok";
-let fotos = {};
-let ultimoLink = localStorage.getItem("crpc_ultimo_link") || "";
-let deferredPrompt = null;
+function setStatus(msg,type=''){ $('smsg').textContent=msg; $('sdot').className='dot '+type; }
+function spin(v){ $('spin').classList.toggle('on',!!v); }
+function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2600); }
 
-/* =========================================================
-   INIT FIREBASE
-   ========================================================= */
-(function initFirebase(){
-  const el = document.getElementById("firebaseStatus");
-  try{
-    firebase.initializeApp(FIREBASE_CONFIG);
-    firebaseReady = true;
-    el.textContent = "Firebase OK";
-    el.className = "statusMini ok";
-  }catch(e){
-    console.error(e);
-    firebaseReady = false;
-    el.textContent = "Firebase ERROR";
-    el.className = "statusMini bad";
-  }
-  updateDebug();
-})();
-
-/* =========================================================
-   PWA
-   ========================================================= */
-(function initManifest(){
-  const c = document.createElement("canvas");
-  c.width = c.height = 192;
-  const x = c.getContext("2d");
-  x.fillStyle = "#111114";
-  x.beginPath();
-  if(x.roundRect){x.roundRect(0,0,192,192,42)}else{x.rect(0,0,192,192)}
-  x.fill();
-  x.fillStyle = "#25d366";
-  x.font = "900 68px -apple-system,BlinkMacSystemFont,sans-serif";
-  x.textAlign = "center";
-  x.textBaseline = "middle";
-  x.fillText("CQ",96,82);
-  x.fillStyle = "#777";
-  x.font = "900 20px -apple-system,BlinkMacSystemFont,sans-serif";
-  x.fillText("CRPC",96,146);
-  const icon = c.toDataURL("image/png");
-  document.getElementById("apple-icon").href = icon;
-  const manifest = {
-    name:"CRPC Quiroga",
-    short_name:"CRPC",
-    start_url:"./index.html",
-    scope:"./",
-    display:"standalone",
-    orientation:"portrait",
-    background_color:"#050505",
-    theme_color:"#050505",
-    icons:[{src:icon,sizes:"192x192",type:"image/png",purpose:"any maskable"}]
-  };
-  const blob = new Blob([JSON.stringify(manifest)],{type:"application/manifest+json"});
-  document.getElementById("manifest-link").href = URL.createObjectURL(blob);
-})();
-
-if("serviceWorker" in navigator){
-  window.addEventListener("load", async ()=>{
-    try{
-      await navigator.serviceWorker.register("./sw.js");
-    }catch(e){
-      console.warn("SW no registrado", e);
-    }
-  });
+function go(page){
+  ['Scan','Files','Zips'].forEach(n=>{ $('page'+n).classList.remove('on'); $('nav'+n).classList.remove('on'); });
+  $('page'+page[0].toUpperCase()+page.slice(1)).classList.add('on');
+  $('nav'+page[0].toUpperCase()+page.slice(1)).classList.add('on');
+  if(page==='files') renderFiles();
+  if(page==='zips') renderZips();
 }
 
-window.addEventListener("beforeinstallprompt", e=>{
-  e.preventDefault();
-  deferredPrompt = e;
-  document.getElementById("installBox").classList.add("show");
-});
-window.addEventListener("appinstalled", ()=>{
-  document.getElementById("installBox").classList.remove("show");
-});
-function installApp(){
-  if(!deferredPrompt){
-    toast("Si no aparece instalar, usá menú del navegador > Agregar a pantalla de inicio");
-    return;
-  }
-  deferredPrompt.prompt();
-  deferredPrompt.userChoice.finally(()=>{
-    deferredPrompt = null;
-    document.getElementById("installBox").classList.remove("show");
-  });
+function initQuick(){
+  $('quick').innerHTML=FAVORITOS.map(x=>`<button class="qbtn" onclick="setTaller('${x.replace(/'/g,"\\'")}')">${x}</button>`).join('');
 }
+function setTaller(v){ $('taller').value=v; $('suggest').classList.remove('show'); actualizar(); }
+function buscarTaller(){
+  const q=$('taller').value.trim().toLowerCase();
+  const list=(q?TALLERES.filter(t=>t.toLowerCase().includes(q)):TALLERES.slice(0,8)).slice(0,14);
+  $('suggest').innerHTML=list.map(t=>`<div class="sug" onclick="setTaller('${t.replace(/'/g,"\\'")}')">${t}</div>`).join('');
+  $('suggest').classList.toggle('show',list.length>0);
+}
+document.addEventListener('click',e=>{ if(!e.target.closest('.searchBox')) $('suggest').classList.remove('show'); });
 
-/* =========================================================
-   UI
-   ========================================================= */
-function setTab(tab){
-  currentTab = tab;
-  document.getElementById("tabScan").classList.toggle("active",tab==="scan");
-  document.getElementById("tabHist").classList.toggle("active",tab==="hist");
-  document.getElementById("pageScan").classList.toggle("hide",tab!=="scan");
-  document.getElementById("pageHist").classList.toggle("hide",tab!=="hist");
-  document.getElementById("bottomScan").classList.toggle("hide",tab!=="scan");
-  if(tab==="hist") renderHist();
+function setResultado(r){
+  resultado=r;
+  $('rok').className=r==='APTA'?'rbtn on ok':'rbtn';
+  $('rbad').className=r==='RECHAZADA'?'rbtn on bad':'rbtn';
 }
-function setFilter(f){
-  filter = f;
-  document.getElementById("fHoy").classList.toggle("active",f==="hoy");
-  document.getElementById("fSemana").classList.toggle("active",f==="semana");
-  document.getElementById("fTodos").classList.toggle("active",f==="todos");
-  renderHist();
-}
-function setTallerQuick(v){
-  document.getElementById("taller").value = v;
-}
-function setValvula(v){
-  resultadoValvula = v;
-  document.getElementById("resOk").classList.toggle("active",v==="ok");
-  document.getElementById("resRech").classList.toggle("active",v==="rech");
-}
-function toast(msg){
-  const t=document.getElementById("toast");
-  t.textContent=msg;
-  t.classList.add("show");
-  clearTimeout(t._timer);
-  t._timer=setTimeout(()=>t.classList.remove("show"),3200);
-}
-function setWork(show,msg){
-  const b=document.getElementById("workBox");
-  const m=document.getElementById("workMsg");
-  if(msg) m.textContent=msg;
-  b.classList.toggle("show",!!show);
-}
-function updateDebug(extra=""){
-  const n = Object.keys(fotos).length;
-  document.getElementById("debugInfo").textContent =
-`Firebase: ${firebaseReady ? "OK" : "ERROR"}
-Storage bucket: ${FIREBASE_CONFIG.storageBucket}
-Carpeta PDF: crpc/pdfs/
-Fotos: ${n}/5
-Calidad imagen: ${MAX_IMG}px / ${JPG_QUALITY}
-Último link: ${ultimoLink || "sin link"}
-${extra}`;
-}
-
-/* =========================================================
-   FOTOS
-   ========================================================= */
-function sacar(k){
-  document.getElementById("fi_"+k).click();
-}
+function sacar(k){ $('fi_'+k).click(); }
 function cargar(inp,k){
-  const f = inp.files && inp.files[0];
-  if(!f) return;
-  const r = new FileReader();
-  r.onload = e=>{
-    fotos[k] = e.target.result;
-    document.getElementById("img_"+k).src = e.target.result;
-    document.getElementById("btn_"+k).classList.add("ok");
+  const f=inp.files[0]; if(!f) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    fotos[k]=e.target.result; rot[k]=rot[k]||0;
+    $('img_'+k).src=e.target.result;
+    $('img_'+k).style.transform=`rotate(${rot[k]}deg)`;
+    $('btn_'+k).classList.add('ok');
     actualizar();
   };
-  r.readAsDataURL(f);
-  inp.value = "";
+  reader.readAsDataURL(f);
+  inp.value='';
 }
-function borrarFoto(k){
-  delete fotos[k];
-  document.getElementById("img_"+k).removeAttribute("src");
-  document.getElementById("btn_"+k).classList.remove("ok");
-  actualizar();
+function rotar(ev,k){
+  ev.stopPropagation();
+  if(!fotos[k]) return;
+  rot[k]=((rot[k]||0)+90)%360;
+  $('img_'+k).style.transform=`rotate(${rot[k]}deg)`;
 }
 function actualizar(){
-  const n = KEYS.filter(k=>fotos[k]).length;
-  document.getElementById("countTxt").textContent = n + " / 5";
-  document.getElementById("progressBar").style.width = (n/5*100) + "%";
-  document.getElementById("sendBtn").disabled = n < 4;
-  updateDebug();
+  const n=KEYS.filter(k=>fotos[k]).length;
+  $('photoCount').textContent=n+'/5';
+  $('saveBtn').disabled=busy || n<4 || !$('taller').value.trim();
+  $('zipBtn').disabled=busy || archivos.length===0;
+  $('fileNum').textContent=archivos.length;
+  $('navFileCount').textContent=archivos.length;
+  $('miniFileCount').textContent=archivos.length;
+  const kb=archivos.reduce((a,it)=>a+it.blob.size,0)/1024;
+  $('fileKb').textContent=Math.round(kb);
+  renderFiles();
+  updateZipCounts();
 }
-function limpiarFormulario(keepTaller){
-  fotos = {};
+function limpiarActual(){
+  fotos={}; rot={}; resultado='APTA'; setResultado('APTA');
   KEYS.forEach(k=>{
-    document.getElementById("img_"+k).removeAttribute("src");
-    document.getElementById("btn_"+k).classList.remove("ok");
+    $('btn_'+k).classList.remove('ok');
+    $('img_'+k).src='';
+    $('img_'+k).style.transform='';
   });
-  if(!keepTaller) document.getElementById("taller").value = "";
-  setValvula("ok");
+  $('taller').value='';
+  setStatus('Listo. Sacá fotos y guardá el PDF.');
   actualizar();
-  toast("Pantalla limpia");
-}
-
-/* =========================================================
-   IMAGEN / PDF
-   ========================================================= */
-async function resizeImg(src){
-  return new Promise((res,rej)=>{
-    const img = new Image();
-    img.onload = ()=>{
-      let w = img.naturalWidth, h = img.naturalHeight;
-      const ratio = Math.min(1, MAX_IMG/w, MAX_IMG/h);
-      w = Math.round(w*ratio);
-      h = Math.round(h*ratio);
-      const c = document.createElement("canvas");
-      c.width = w; c.height = h;
-      const ctx = c.getContext("2d", {alpha:false});
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = "high";
-      ctx.fillStyle = "#fff";
-      ctx.fillRect(0,0,w,h);
-      ctx.drawImage(img,0,0,w,h);
-      res({d:c.toDataURL("image/jpeg",JPG_QUALITY),w,h});
-    };
-    img.onerror = rej;
-    img.src = src;
-  });
 }
 function safeName(s){
-  return (s||"Sin_nombre")
-    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
-    .replace(/[^a-zA-Z0-9_-]+/g,"_")
-    .replace(/_+/g,"_")
-    .slice(0,60) || "Sin_nombre";
+  return (s||'SIN_TALLER').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9_-]+/g,'_').replace(/^_+|_+$/g,'').slice(0,45) || 'SIN_TALLER';
 }
-function todayKey(d=new Date()){
-  const y=d.getFullYear();
-  const m=String(d.getMonth()+1).padStart(2,"0");
-  const day=String(d.getDate()).padStart(2,"0");
-  return `${y}-${m}-${day}`;
+function nowParts(){
+  const d=new Date(); const pad=n=>String(n).padStart(2,'0');
+  return {fecha:d.toLocaleDateString('es-AR'), hora:d.toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'}), stamp:`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`, iso:d.toISOString(), day:`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`};
 }
-function dateHuman(d=new Date()){
-  return d.toLocaleDateString("es-AR");
-}
-function timeHuman(d=new Date()){
-  return d.toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit"});
+async function imageForPdf(src,deg=0){
+  return new Promise((res,rej)=>{
+    const img=new Image();
+    img.onload=()=>{
+      const MAX=2400, Q=.92;
+      let w=img.naturalWidth,h=img.naturalHeight;
+      const scale=Math.min(1,MAX/Math.max(w,h));
+      w=Math.round(w*scale); h=Math.round(h*scale);
+      const swap=deg%180!==0;
+      const c=document.createElement('canvas');
+      c.width=swap?h:w; c.height=swap?w:h;
+      const ctx=c.getContext('2d');
+      ctx.save();
+      if(deg===90){ctx.translate(c.width,0);ctx.rotate(Math.PI/2);}
+      else if(deg===180){ctx.translate(c.width,c.height);ctx.rotate(Math.PI);}
+      else if(deg===270){ctx.translate(0,c.height);ctx.rotate(3*Math.PI/2);}
+      ctx.drawImage(img,0,0,w,h);
+      ctx.restore();
+      res({d:c.toDataURL('image/jpeg',Q),w:c.width,h:c.height});
+    };
+    img.onerror=rej; img.src=src;
+  });
 }
 async function crearPDF(taller){
-  if(!window.jspdf || !window.jspdf.jsPDF) throw new Error("No cargó jsPDF. Revisá internet.");
-  const {jsPDF} = window.jspdf;
-  const doc = new jsPDF({orientation:"portrait",unit:"mm",format:"a4"});
-  const PW=210, PH=297, M=10;
-  const now = new Date();
-  const fecha = dateHuman(now), hora = timeHuman(now);
-
-  setWork(true,"Optimizando fotos...");
-  const imgs = {};
-  for(const k of KEYS){
-    if(fotos[k]) imgs[k] = await resizeImg(fotos[k]);
-  }
-  const presentes = KEYS.filter(k=>imgs[k]);
-  const totalPages = 1 + presentes.length;
-
+  if(!window.jspdf||!window.jspdf.jsPDF) throw new Error('jsPDF no cargó');
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
+  const PW=210,PH=297,M=10,np=nowParts();
+  const present=KEYS.filter(k=>fotos[k]);
   function cab(){
-    doc.setFillColor(15,15,17);
-    doc.rect(0,0,PW,18,"F");
-    doc.setTextColor(255,255,255);
-    doc.setFont("helvetica","bold");
-    doc.setFontSize(10);
-    doc.text("CRPC — Quiroga Juan Edgardo",M,7);
-    doc.setFont("helvetica","normal");
-    doc.setFontSize(7);
-    doc.text("Registro fotográfico · NAG-444 (2026)",M,13);
-    doc.text(fecha+"  "+hora,PW-M,7,{align:"right"});
+    doc.setFillColor(15,15,17); doc.rect(0,0,PW,18,'F');
+    doc.setTextColor(255,255,255); doc.setFont('helvetica','bold'); doc.setFontSize(10);
+    doc.text('CRPC QUIROGA GNC - USO INTERNO',M,7);
+    doc.setFont('helvetica','normal'); doc.setFontSize(7);
+    doc.text('Registro fotográfico · NAG-444 (2026)',M,13);
+    doc.text(np.fecha+' '+np.hora,PW-M,7,{align:'right'});
     doc.setTextColor(0,0,0);
   }
-  function pie(p,t){
-    doc.setFont("helvetica","normal");
-    doc.setFontSize(6.5);
-    doc.setTextColor(130,130,130);
-    doc.text("CRPC Quiroga · Registro fotográfico",M,PH-6);
-    doc.text("Pág. "+p+" / "+t,PW-M,PH-6,{align:"right"});
+  function pie(i,total){
+    doc.setTextColor(145,145,145); doc.setFontSize(6.5);
+    doc.text('CRPC QUIROGA GNC - USO INTERNO',M,PH-6);
+    doc.text('Pág. '+i+' / '+total,PW-M,PH-6,{align:'right'});
     doc.setTextColor(0,0,0);
   }
-  function sec(txt,y){
-    doc.setFillColor(235,235,238);
-    doc.roundedRect(M,y,PW-2*M,8,2,2,"F");
-    doc.setFont("helvetica","bold");
-    doc.setFontSize(9);
-    doc.setTextColor(55,55,55);
-    doc.text(txt,M+3,y+5.5);
-    doc.setTextColor(0,0,0);
-    return y+12;
-  }
-
+  const total=1+present.length;
   cab();
-  let y=29;
-  doc.setFillColor(248,248,250);
-  doc.roundedRect(M,y,PW-2*M,42,2,2,"F");
-  doc.setFontSize(8); doc.setFont("helvetica","normal"); doc.setTextColor(105,105,105);
-  doc.text("TALLER DE MONTAJE",M+5,y+8);
-  doc.setFontSize(16); doc.setFont("helvetica","bold"); doc.setTextColor(0,0,0);
-  doc.text(taller,M+5,y+19,{maxWidth:130});
-  doc.setFontSize(8); doc.setFont("helvetica","normal"); doc.setTextColor(105,105,105);
-  doc.text("FECHA",M+5,y+30);
-  doc.setFontSize(10); doc.setFont("helvetica","bold"); doc.setTextColor(0,0,0);
-  doc.text(fecha+" · "+hora,M+5,y+36);
-
-  doc.setFontSize(8); doc.setFont("helvetica","normal"); doc.setTextColor(105,105,105);
-  doc.text("FOTOS",PW-M-5,y+30,{align:"right"});
-  doc.setFontSize(10); doc.setFont("helvetica","bold"); doc.setTextColor(0,0,0);
-  doc.text(presentes.length+" / 5",PW-M-5,y+36,{align:"right"});
-
-  y+=50;
-  if(resultadoValvula==="rech"){
-    doc.setFillColor(190,28,24);
-    doc.roundedRect(M,y,PW-2*M,19,2.5,2.5,"F");
-    doc.setTextColor(255,255,255);
-    doc.setFont("helvetica","bold"); doc.setFontSize(14);
-    doc.text("VÁLVULA RECHAZADA",PW/2,y+8,{align:"center"});
-    doc.setFont("helvetica","normal"); doc.setFontSize(9);
-    doc.text("Fuera de servicio",PW/2,y+14.5,{align:"center"});
-  }else{
-    doc.setFillColor(10,105,48);
-    doc.roundedRect(M,y,PW-2*M,19,2.5,2.5,"F");
-    doc.setTextColor(255,255,255);
-    doc.setFont("helvetica","bold"); doc.setFontSize(14);
-    doc.text("VÁLVULA APTA",PW/2,y+8,{align:"center"});
-    doc.setFont("helvetica","normal"); doc.setFontSize(9);
-    doc.text("Apta para continuar en servicio",PW/2,y+14.5,{align:"center"});
-  }
+  let y=30;
+  doc.setFillColor(245,245,247); doc.roundedRect(M,y,PW-2*M,42,2,2,'F');
+  doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(100,100,100);
+  doc.text('TALLER',M+5,y+8);
+  doc.setFont('helvetica','bold'); doc.setFontSize(16); doc.setTextColor(0,0,0);
+  doc.text(taller,M+5,y+19,{maxWidth:PW-20});
+  doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(100,100,100);
+  doc.text('RESULTADO VÁLVULA',M+5,y+30);
+  doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(resultado==='APTA'?10:190,resultado==='APTA'?115:25,resultado==='APTA'?45:25);
+  doc.text(resultado==='APTA'?'VÁLVULA APTA':'VÁLVULA RECHAZADA',M+5,y+37);
   doc.setTextColor(0,0,0);
-  y+=28;
-
-  y=sec("CONTENIDO DEL INFORME",y);
-  doc.setFont("helvetica","normal"); doc.setFontSize(9); doc.setTextColor(40,40,40);
-  presentes.forEach((k,i)=>{
-    doc.text("• Pág. "+(i+2)+" — "+LABELS[k]+" ("+SECTION[k]+")",M+3,y);
-    y+=6;
-  });
-  const faltan = KEYS.filter(k=>!imgs[k]);
-  if(faltan.length){
-    y+=3;
-    doc.setTextColor(170,80,30);
-    doc.setFont("helvetica","italic"); doc.setFontSize(8);
-    doc.text("Foto(s) no incluida(s): "+faltan.map(k=>LABELS[k]).join(", "),M+3,y,{maxWidth:180});
+  doc.setFontSize(9); doc.setFont('helvetica','bold');
+  y+=58;
+  doc.text('Fotos incluidas:',M,y); y+=7;
+  doc.setFont('helvetica','normal'); doc.setFontSize(9);
+  present.forEach((k,i)=>{ doc.text((i+1)+'. '+LABELS[k],M+4,y); y+=6; });
+  pie(1,total);
+  for(let i=0;i<present.length;i++){
+    const k=present[i];
+    const im=await imageForPdf(fotos[k],rot[k]||0);
+    doc.addPage(); cab();
+    doc.setFont('helvetica','bold'); doc.setFontSize(14);
+    doc.text(LABELS[k],M,31);
+    const areaX=M, areaY=38, areaW=PW-2*M, areaH=PH-areaY-16;
+    const scale=Math.min(areaW/im.w,areaH/im.h);
+    const drawW=im.w*scale, drawH=im.h*scale;
+    const x=areaX+(areaW-drawW)/2, yy=areaY+(areaH-drawH)/2;
+    doc.setDrawColor(225,225,225); doc.rect(x-.4,yy-.4,drawW+.8,drawH+.8);
+    doc.addImage(im.d,'JPEG',x,yy,drawW,drawH);
+    pie(i+2,total);
   }
-  pie(1,totalPages);
-
-  presentes.forEach((k,i)=>{
-    const im = imgs[k];
-    doc.addPage();
-    cab();
-    let yy = sec(SECTION[k],23);
-    doc.setFont("helvetica","bold");
-    doc.setFontSize(14);
-    doc.setTextColor(0,0,0);
-    doc.text(LABELS[k],M,yy+4);
-    yy += 10;
-
-    const areaX=M, areaY=yy, areaW=PW-2*M, areaH=PH-yy-14;
-    const scale = Math.min(areaW/im.w, areaH/im.h);
-    const drawW = im.w*scale, drawH=im.h*scale;
-    const drawX = areaX + (areaW-drawW)/2;
-    const drawY = areaY + (areaH-drawH)/2;
-    doc.setDrawColor(215,215,220);
-    doc.setLineWidth(.25);
-    doc.rect(drawX-.5,drawY-.5,drawW+1,drawH+1);
-    doc.addImage(im.d,"JPEG",drawX,drawY,drawW,drawH);
-    pie(i+2,totalPages);
-  });
-
-  const blob = doc.output("blob");
-  const fname = "CRPC_"+safeName(taller)+"_"+todayKey(now)+"_"+String(now.getHours()).padStart(2,"0")+String(now.getMinutes()).padStart(2,"0")+".pdf";
-  return {blob,fname,fecha,hora,ts:Date.now(),dateKey:todayKey(now),fotosCount:presentes.length};
+  const fname=`CRPC_${safeName(taller)}_${np.stamp}.pdf`;
+  return {blob:doc.output('blob'), fname, taller, fecha:np.fecha, hora:np.hora, ts:Date.now(), resultado, fotos:present.length};
 }
-
-/* =========================================================
-   FIREBASE STORAGE
-   ========================================================= */
-function withTimeout(promise, ms){
-  return Promise.race([
-    promise,
-    new Promise((_,rej)=>setTimeout(()=>rej(new Error("Firebase tardó demasiado. Probá con mejor señal o menos fotos.")),ms))
-  ]);
-}
-async function subirPDF(blob,fname){
-  if(!firebaseReady) throw new Error("Firebase no está inicializado.");
-  const path = "crpc/pdfs/" + Date.now() + "_" + fname;
-  const ref = firebase.storage().ref(path);
-  const upload = ref.put(blob,{contentType:"application/pdf",cacheControl:"public,max-age=31536000"});
-  const snap = await withTimeout(upload, UPLOAD_TIMEOUT);
-  const url = await withTimeout(snap.ref.getDownloadURL(), 10000);
-  return {url,path};
-}
-
-/* =========================================================
-   HISTORIAL LOCAL
-   ========================================================= */
-const HIST_KEY = "crpc_historial_links_v2";
-function getHist(){
-  try{return JSON.parse(localStorage.getItem(HIST_KEY)||"[]")}catch(e){return []}
-}
-function setHist(arr){
-  localStorage.setItem(HIST_KEY,JSON.stringify(arr));
-}
-function addHist(item){
-  const arr = getHist();
-  arr.unshift(item);
-  setHist(arr.slice(0,300));
-}
-function sameDay(ts){
-  return todayKey(new Date(ts)) === todayKey(new Date());
-}
-function inWeek(ts){
-  return Date.now() - ts <= 7*24*60*60*1000;
-}
-function renderHist(){
-  const q = (document.getElementById("histSearch")?.value||"").trim().toLowerCase();
-  let arr = getHist();
-  const todayCount = arr.filter(it=>sameDay(it.ts)).length;
-  if(filter==="hoy") arr = arr.filter(it=>sameDay(it.ts));
-  if(filter==="semana") arr = arr.filter(it=>inWeek(it.ts));
-  if(q) arr = arr.filter(it=>(it.taller||"").toLowerCase().includes(q));
-  document.getElementById("statCount").textContent = arr.length;
-  document.getElementById("statToday").textContent = todayCount;
-
-  const el = document.getElementById("histList");
-  if(!arr.length){
-    el.innerHTML = '<div class="emptyHist">Sin registros para mostrar.</div>';
-    return;
-  }
-  el.innerHTML = arr.map(it=>{
-    const badgeClass = it.resultado === "rech" ? "rech" : "ok";
-    const badgeText = it.resultado === "rech" ? "RECHAZADA" : "APTA";
-    return `
-      <div class="hitem">
-        <div class="hTop">
-          <div style="min-width:0">
-            <div class="hTitle">🏭 ${escapeHtml(it.taller || "Sin nombre")}</div>
-            <div class="hDate">${escapeHtml(it.fecha)} ${escapeHtml(it.hora)} · ${it.fotosCount || 0}/5 fotos</div>
-          </div>
-          <div class="hBadge ${badgeClass}">${badgeText}</div>
-        </div>
-        <div class="hLink">${escapeHtml(it.url || "Sin link")}</div>
-        <div class="hActions">
-          <button onclick="abrirLink('${it.id}')">Abrir</button>
-          <button onclick="copiarLink('${it.id}')">Copiar</button>
-          <button onclick="reenviarLink('${it.id}')">WhatsApp</button>
-        </div>
-        <div class="hActions" style="grid-template-columns:1fr">
-          <button class="del" onclick="eliminarRegistro('${it.id}')">Eliminar registro local</button>
-        </div>
-      </div>
-    `;
-  }).join("");
-}
-function escapeHtml(s){
-  return String(s||"").replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
-}
-function findHist(id){
-  return getHist().find(it=>it.id===id);
-}
-async function copyText(txt){
-  if(!txt) throw new Error("No hay texto para copiar.");
-  if(navigator.clipboard && window.isSecureContext){
-    await navigator.clipboard.writeText(txt);
-  }else{
-    const ta=document.createElement("textarea");
-    ta.value=txt; document.body.appendChild(ta); ta.select();
-    document.execCommand("copy"); document.body.removeChild(ta);
-  }
-}
-function abrirLink(id){
-  const it=findHist(id); if(!it||!it.url) return toast("No hay link");
-  window.open(it.url,"_blank","noopener");
-}
-async function copiarLink(id){
-  const it=findHist(id); if(!it||!it.url) return toast("No hay link");
-  try{await copyText(it.url); toast("Link copiado")}catch(e){toast("No se pudo copiar")}
-}
-function reenviarLink(id){
-  const it=findHist(id); if(!it) return;
-  const txt = buildWhatsAppText(it.taller,it.fecha,it.hora,it.url,it.resultado);
-  window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(txt),"_blank","noopener");
-}
-function eliminarRegistro(id){
-  if(!confirm("¿Eliminar este registro local?")) return;
-  setHist(getHist().filter(it=>it.id!==id));
-  renderHist();
-}
-function limpiarDia(){
-  if(!confirm("¿Limpiar los registros locales de hoy? Los PDF subidos quedan en Firebase.")) return;
-  setHist(getHist().filter(it=>!sameDay(it.ts)));
-  renderHist();
-  toast("Día limpiado");
-}
-function limpiarTodo(){
-  if(!confirm("¿Borrar TODO el historial local? Los PDF subidos quedan en Firebase.")) return;
-  setHist([]);
-  renderHist();
-  toast("Historial borrado");
-}
-async function copiarUltimoLink(){
-  if(!ultimoLink) return toast("Todavía no hay link generado");
-  try{await copyText(ultimoLink); toast("Último link copiado")}catch(e){toast("No se pudo copiar")}
-}
-
-/* =========================================================
-   ENVIAR
-   ========================================================= */
-function buildWhatsAppText(taller,fecha,hora,url,resultado){
-  const estado = resultado === "rech" ? "VÁLVULA RECHAZADA" : "VÁLVULA APTA";
-  return "*CRPC Quiroga Juan Edgardo*\n" +
-    "Taller: " + taller + "\n" +
-    "Fecha: " + fecha + " " + hora + "\n" +
-    "Resultado: " + estado + "\n" +
-    "_NAG-444 (2026)_\n\n" +
-    "PDF del informe:\n" + (url || "Sin link");
-}
-async function enviar(){
-  const btn = document.getElementById("sendBtn");
-  const taller = (document.getElementById("taller").value||"").trim() || "Sin nombre";
-  const n = KEYS.filter(k=>fotos[k]).length;
-  if(n < 4) return toast("Cargá mínimo 4 fotos");
-  btn.disabled = true;
-
+async function guardarPDF(){
+  const taller=$('taller').value.trim();
+  if(!taller){ toast('Falta taller'); return; }
+  const n=KEYS.filter(k=>fotos[k]).length;
+  if(n<4){ toast('Faltan fotos'); return; }
+  busy=true; spin(true); actualizar();
   try{
-    setWork(true,"Generando PDF en alta calidad...");
-    const pdf = await crearPDF(taller);
-
-    setWork(true,"Subiendo PDF a Firebase Storage...");
-    const up = await subirPDF(pdf.blob, pdf.fname);
-
-    ultimoLink = up.url;
-    localStorage.setItem("crpc_ultimo_link", ultimoLink);
-
-    const item = {
-      id: String(Date.now()) + "_" + Math.random().toString(16).slice(2),
-      taller,
-      fecha: pdf.fecha,
-      hora: pdf.hora,
-      ts: pdf.ts,
-      dateKey: pdf.dateKey,
-      fotosCount: pdf.fotosCount,
-      resultado: resultadoValvula,
-      url: up.url,
-      path: up.path,
-      fname: pdf.fname
-    };
-    addHist(item);
-
-    setWork(true,"Abriendo WhatsApp con el link...");
-    const txt = buildWhatsAppText(taller,pdf.fecha,pdf.hora,up.url,resultadoValvula);
-    window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(txt),"_blank","noopener");
-
-    toast("PDF subido y link guardado");
-    setWork(false);
-
-    limpiarFormulario(false);
-    renderHist();
-
+    setStatus('Generando PDF y guardando en Archivos...','warn');
+    const item=await crearPDF(taller);
+    archivos.push(item);
+    toast('PDF guardado en Archivos');
+    setStatus('PDF guardado. Escaneá otro o andá a Archivos.','ok');
+    limpiarActual();
   }catch(e){
     console.error(e);
-    updateDebug("ERROR: "+(e.message||e));
-    setWork(false);
-    toast("Error: "+(e.message||"no se pudo enviar"));
-
-    /* Fallback: si el PDF se creó pero falló la subida, no lo tenemos fuera de crearPDF.
-       Para no re-generar sin aviso, hacemos una descarga simple reintentando creación. */
-    try{
-      setWork(true,"Falló Firebase. Preparando descarga local...");
-      const pdf = await crearPDF(taller);
-      const a=document.createElement("a");
-      a.href=URL.createObjectURL(pdf.blob);
-      a.download=pdf.fname;
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      setTimeout(()=>URL.revokeObjectURL(a.href),3000);
-      toast("PDF descargado. Adjuntalo manualmente si hace falta.");
-    }catch(e2){
-      console.error(e2);
-    }finally{
-      setWork(false);
-    }
+    setStatus('Error generando PDF: '+(e.message||e),'err');
+    toast('Error generando PDF');
   }finally{
-    actualizar();
+    busy=false; spin(false); actualizar();
   }
 }
-
-/* =========================================================
-   ARRANQUE
-   ========================================================= */
-actualizar();
-renderHist();
+function renderFiles(){
+  if(!$('fileList')) return;
+  if(!archivos.length){ $('fileList').innerHTML='<div class="empty">No hay PDF guardados. Andá a Escanear y tocá “Guardar PDF”.</div>'; return; }
+  $('fileList').innerHTML=archivos.map((it,i)=>`
+    <div class="item">
+      <div class="itemTop">
+        <div class="itemInfo">
+          <div class="itemTitle">${i+1}. ${it.taller}</div>
+          <div class="itemMeta">${it.hora} · ${it.fotos}/5 fotos · ${it.resultado} · ${(it.blob.size/1024).toFixed(0)} KB</div>
+        </div>
+      </div>
+      <div class="itemBtns">
+        <button class="ibtn" onclick="descargarPDF(${i})">Descargar</button>
+        <button class="ibtn danger" onclick="borrarPDF(${i})">Borrar</button>
+      </div>
+    </div>`).join('');
+}
+function descargarPDF(i){
+  const it=archivos[i]; const u=URL.createObjectURL(it.blob);
+  const a=document.createElement('a'); a.href=u; a.download=it.fname; a.click();
+  setTimeout(()=>URL.revokeObjectURL(u),2000);
+}
+function borrarPDF(i){ archivos.splice(i,1); actualizar(); toast('PDF borrado del lote'); }
+function timeoutPromise(ms,msg){ return new Promise((_,rej)=>setTimeout(()=>rej(new Error(msg)),ms)); }
+async function subirZip(blob,fname){
+  if(!firebaseReady) throw new Error('Firebase no configurado');
+  const ref=firebase.storage().ref('crpc/lotes/'+Date.now()+'_'+fname);
+  const p=ref.put(blob,{contentType:'application/zip'}).then(s=>s.ref.getDownloadURL());
+  return Promise.race([p,timeoutPromise(35000,'Firebase tardó demasiado')]);
+}
+async function enviarZip(){
+  if(!archivos.length){ toast('No hay PDF guardados'); return; }
+  if(!window.JSZip){ toast('JSZip no cargó'); return; }
+  busy=true; spin(true); actualizar();
+  try{
+    const np=nowParts();
+    setStatus('Armando ZIP con '+archivos.length+' PDF...','warn');
+    const zip=new JSZip();
+    archivos.forEach((it,idx)=>zip.file(String(idx+1).padStart(2,'0')+'_'+it.fname,it.blob));
+    const resumen=[
+      'CRPC QUIROGA GNC - USO INTERNO',
+      'Fecha: '+np.fecha+' '+np.hora,
+      'Cantidad de informes: '+archivos.length,
+      '',
+      ...archivos.map((it,i)=>(i+1)+') '+it.taller+' - '+it.hora+' - '+it.resultado+' - '+it.fotos+'/5 fotos')
+    ].join('\n');
+    zip.file('RESUMEN_LOTE.txt',resumen);
+    const zipBlob=await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:6}});
+    const fname='LOTE_CRPC_'+np.stamp+'.zip';
+    setStatus('Subiendo ZIP a Firebase...','warn');
+    const url=await subirZip(zipBlob,fname);
+    const msg='*CRPC QUIROGA GNC - USO INTERNO*\nFecha: '+np.fecha+' '+np.hora+'\nCantidad de informes: '+archivos.length+'\n\nZIP con PDFs:\n'+url;
+    guardarZipHist({fecha:np.fecha,hora:np.hora,day:np.day,cantidad:archivos.length,size:zipBlob.size,url,fname,items:archivos.map(x=>({taller:x.taller,hora:x.hora,resultado:x.resultado,fotos:x.fotos}))});
+    archivos=[];
+    actualizar();
+    setStatus('ZIP subido. WhatsApp abierto con el link.','ok');
+    const a=document.createElement('a');
+    a.href='https://wa.me/'+WA+'?text='+encodeURIComponent(msg);
+    a.target='_blank'; a.rel='noopener'; document.body.appendChild(a); a.click(); a.remove();
+    toast('ZIP enviado por WhatsApp');
+    go('zips');
+  }catch(e){
+    console.error(e);
+    setStatus('Error: '+(e.message||e),'err');
+    toast('Falló el ZIP o Firebase');
+  }finally{
+    busy=false; spin(false); actualizar();
+  }
+}
+function getHist(){ try{return JSON.parse(localStorage.getItem('crpc_zip_hist_v2')||'[]')}catch(e){return[]} }
+function setHist(x){ localStorage.setItem('crpc_zip_hist_v2',JSON.stringify(x.slice(0,80))); }
+function guardarZipHist(it){ const h=getHist(); h.unshift(it); setHist(h); renderZips(); }
+function updateZipCounts(){
+  const h=getHist(), np=nowParts();
+  $('zipNum').textContent=h.length;
+  $('navZipCount').textContent=h.length;
+  $('zipToday').textContent=h.filter(x=>x.day===np.day).length;
+}
+function renderZips(){
+  updateZipCounts();
+  const h=getHist();
+  if(!h.length){ $('zipList').innerHTML='<div class="empty">Todavía no enviaste ningún ZIP.</div>'; return; }
+  $('zipList').innerHTML=h.map((it,i)=>`
+    <div class="hist">
+      <div class="histTitle">ZIP · ${it.cantidad} informes</div>
+      <div class="histMeta">${it.fecha} ${it.hora} · ${(it.size/1024).toFixed(0)} KB</div>
+      <div class="histMeta">${(it.items||[]).slice(0,5).map(x=>x.taller).join(' · ')}${(it.items||[]).length>5?' · ...':''}</div>
+      <div class="itemBtns">
+        <button class="ibtn" onclick="abrirZip(${i})">Abrir</button>
+        <button class="ibtn" onclick="copiarZip(${i})">Copiar</button>
+        <button class="ibtn" onclick="reenviarZip(${i})">WhatsApp</button>
+        <button class="ibtn danger" onclick="borrarZip(${i})">Borrar</button>
+      </div>
+    </div>`).join('');
+}
+function abrirZip(i){ const it=getHist()[i]; if(it) window.open(it.url,'_blank','noopener'); }
+async function copiarZip(i){ const it=getHist()[i]; if(!it)return; await navigator.clipboard.writeText(it.url); toast('Link copiado'); }
+function reenviarZip(i){
+  const it=getHist()[i]; if(!it)return;
+  const msg='*CRPC QUIROGA GNC - USO INTERNO*\nFecha: '+it.fecha+' '+it.hora+'\nCantidad de informes: '+it.cantidad+'\n\nZIP con PDFs:\n'+it.url;
+  window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(msg),'_blank','noopener');
+}
+function borrarZip(i){ const h=getHist(); h.splice(i,1); setHist(h); renderZips(); }
+function limpiarHistHoy(){
+  if(!confirm('¿Limpiar historial local de hoy?')) return;
+  const np=nowParts();
+  setHist(getHist().filter(x=>x.day!==np.day));
+  renderZips();
+}
+function limpiarHistTodo(){
+  if(!confirm('¿Borrar todo el historial local?')) return;
+  localStorage.removeItem('crpc_zip_hist_v2');
+  renderZips();
+}
+if('serviceWorker' in navigator){ window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{})); }
+initQuick(); actualizar(); renderZips();
 </script>
 </body>
 </html>
