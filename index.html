@@ -368,7 +368,7 @@ input[type=file]{display:none}
     <button class="mainbtn" id="saveBtn" onclick="guardarPDF()" disabled>💾 Guardar PDF <span class="count" id="photoCount">0/5</span></button>
     <div class="row">
       <button class="secbtn" onclick="go('files')">Ver archivos <span id="miniFileCount">0</span></button>
-      <button class="secbtn danger" onclick="limpiarActual()">Limpiar</button>
+      <button class="secbtn danger" onclick="pedirLimpiar()">Limpiar</button>
     </div>
   </div>
 </section>
@@ -507,6 +507,15 @@ function actualizar(){
   $('fileKb').textContent=Math.round(kb);
   renderFiles();
   updateZipCounts();
+}
+function pedirLimpiar(){
+  const hayFotos = KEYS.some(k=>fotos[k]);
+  const hayTaller = ($('taller').value||'').trim() !== '';
+  // Si no hay nada cargado, no molestamos con el cartel
+  if(!hayFotos && !hayTaller){ limpiarActual(); return; }
+  const n = KEYS.filter(k=>fotos[k]).length;
+  if(!confirm('¿Vaciar la pantalla actual?\n\nSe van a borrar '+n+' foto(s) y el taller cargado.\nEsto NO se puede deshacer.')) return;
+  limpiarActual();
 }
 function limpiarActual(){
   fotos={}; rot={}; resultado='APTA'; setResultado('APTA');
